@@ -1,0 +1,165 @@
+准备材料
+https://www.apachelounge.com/download/
+1.Apache 2.4.* Win64
+2.mod_fcgid
+http://php.net/manual/zh/install.windows.apache2.php
+
+命令行
+
+httpd  - k start    //启动服务
+httpd  - k stop    //停止服务
+httpd  - k shutdown    //停止服务
+httpd  - k restart    //重启服务
+httpd  - k install  - n  " 服务名 "   -f   "配置文件路径"     //安装服务
+httpd  - k config  - n  " 服务名 "   -f   "配置文件路径"    //修改服务配置文件
+httpd  - k uninstall  - n  " 服务名 "     //移除服务
+
+安装服务例子：
+httpd -k install -n "localApache" -f "E:\ZZH\software\Apache24\conf\httpd.conf"
+
+启动服务例子:
+httpd -k start -n "localApache"
+
+配置重写模块（156行附近）
+#LoadModule rewrite_module modules/mod_rewrite.so
+=>
+LoadModule rewrite_module modules/mod_rewrite.so
+
+配置 fcgid_module
+httpd中写入
+LoadModule fcgid_module modules/mod_fcgid.so
+
+配置 PHP 路径(注意修改2个路径)
+<IfModule mod_fcgid.c>
+    AddHandler fcgid-script .fcgi
+    # fix for: mod_fcgid: read data timeout in 40 seconds
+    IdleTimeout 3600
+    DefaultMinClassProcessCount 100
+    FcgidConnectTimeout 120
+    IPCCommTimeout 400
+    # to get around upload errors when uploading images increase the MaxRequestLen size to 15MB
+    MaxRequestLen 15728640
+</IfModule>
+FcgidInitialEnv PHPRC "E:/ZZH/software/php"
+AddHandler fcgid-script .php
+FcgidWrapper "E:/ZZH/software/php/php-cgi.exe" .php
+
+配置php站点
+<Directory "D:/htdocs/yecsc.com">        
+	Options Indexes FollowSymLinks ExecCGI
+
+    DirectoryIndex index.php
+
+    AllowOverride All
+
+    Order allow,deny
+
+    Allow from all
+
+    Require all granted
+
+</Directory>
+
+
+配置跨域访问
+
+#LoadModule headers_module modules/mod_headers.so
+=>
+LoadModule headers_module modules/mod_headers.so
+
+<Directory "E:\ZZH\wwwroot\phpweb\dfzx\public">
+    Header set Access-Control-Allow-Origin *
+</Directory>
+
+---------------------------------------------------------------------------------------------------------------------------------------
+在Windows系统上面按以往Unix/linux的经验配置Apache时，由于Windows的内存回收机制和进程管理的不同，会发现许多新问题。前些时单位的网站需要搬迁到新的Windows服务器，笔者在调试过程中也碰上了许多问题。新系统是Windows 2003 Server，为了满足网站高负荷的要求，在调整Apache参数时发现进程经常占用内存过多导致当机。经过不断的优化和修改参数组合，终于让服务器稳定下来，可以满足大量访问的考验和应用要求。笔者总结了调试过程中的问题和解决办法如下，以供有类似需求的网管员参考(系统环境为Windows Server 2003和apache2.2.8)：
+1、http-mpm.conf设置
+Apache的线程数控制文件为http-mpm.conf，在conf/exrtra目录下面，要使该配置文件起作用需要在httpd.conf 中将 Include conf/extra/httpd-mpm.conf前#去掉，以使得http-mpm.conf生效。
+在Windows系统中，起作用的是Winnt mpm段，
+<IfModule mpm_winnt_module>
+ThreadsPerChild      150
+MaxRequestsPerChild    0
+</IfModule>
+
+以上是缺省的配置，一般情况下够用了，但负荷较大的网站就需要修改了，否则访问网站会变慢或没有响应。实际设置中可以根据apache-status查看apache实时连接状态，查看其中线程占用数目情况来进行相应的调整，我的服务器最后设置如下：
+<IfModule mpm_winnt_module>
+#ThreadLimit     350
+ThreadsPerChild    350
+MaxRequestsPerChild    10000
+Win32DisableAcceptEx
+</IfModule>
+
+其中ThreadLimit是占用系统线程数限制，修改后会在apache-status中直接看到效果，就是对应的最大的可用线程数(如下所示)：1 requests currently being processed, 349 idle workers
+对于mpm_winnt，ThreadLimit的默认值是1920；对于其他mpM这个值是64。
+注意：Apache在编译时内部有一个硬性的限制"ThreadLimit 20000"(对于mpm_winnt是"ThreadLimit 15000")，你不能超越这个限制。
+ThreadsPerChlid是Apache进程的子线程数，这个指令设置了每个子进程建立的线程数。子进程在启动时建立这些线程后就不再建立新的线程了。如果使用一个类似于mpm_winnt只有一个子进程的mpM，这个数值要足够大，以便可以处理可能的请求高峰。如果使用一个类似于worker有多个子进程的mpM，每个子进程所拥有的所有线程的总数要足够大，以便可以处理可能的请求高峰。
+该参数需要根据 apache-status实时的监控情况来调节，太大会导致内存增长过快，直到服务器当机，太小会导致服务器连接队列在高峰期时占满，从而导致网站连接 慢。同时我们应该修改另一个配置文件httpd-default.php中的超时设置来配合这个参数。
+对于mpm_winnt，ThreadsPerChild的默认值是64；对于其他mpM是25。
+MaxRequestsPerChild是进程的最大的请求数目，既指网站收到请求的缓存数。设置太小了会影响服务器性能，因为会占用较多cpu时间，太大了则会占用内存资源。一般大型的网站文件个数都是成千上万，所以管理员应该根据网站情况自己设定。
+MaxRequestsPerChild指令设置每个子进程在其生存期内允许伺服的最大请求数量。到达MaxRequestsPerChild的限制后，子进程将会结束。如果MaxRequestsPerChild为"0"，子进程将永远不会结束。
+在mpm_netware和mpm_winnt上的默认值是"0"。
+将MaxRequestsPerChild设置成非零值有两个好处：
+a)可以防止(偶然的)内存泄漏无限进行，从而耗尽内存。
+b)给进程一个有限寿命，从而有助于当服务器负载减轻的时候减少活动进程的数量。
+注意：对于KeepAlive链接，只有第一个请求会被计数。事实上，它改变了每个子进程限制最大链接数量的行为。
+Win32DisableAcceptEx加入该语句是为了解决一些警告：
+[warn] (OS 64)指定的网络名不再可用。 : winnt_accept: Asynchronous AcceptEx failed。
+2、httpd-default.conf设置
+在httpd.conf中去掉Include conf/extra/httpd-default.conf前的#以使httpd-default.php生效。我们需要调节以下参数：
+Timeout 20
+该参数为连接超时，缺省的300秒显然太大，缩小该参数就会减少同时连接数，即用户实际占用的线程数，这样就可以起到配合上面ThreadsPerChlid参数的作用。
+KeepAlive On
+该参数为是否保持活连接，目前网站中一个页面一般会包含多个文件，所以相应用户访问时会有多个请求，因此开启可以提高服务器性能。
+MaxKeepAliveRequests 50
+该参数为最大的活连接请求数，可以根据网页实际包含的文件数目自行调节。
+KeepAliveTimeout 5
+该参数为活连接的超时时间，一般只要设置成小于Timeout即可。
+这样设置后，Apache在响应请求和防止恶意攻击方面就取得较为平衡的效果，当然由于内存回收机制和进程管理不同，Windows下长期运行 Apache还是不如Unix稳定，因此我们可以让Apache在每天凌晨访问人数少时自动重启一次，以回收资源。用Windows自带的计划任务就可以 简单的实现。这样，我们就使Apache在Windows平台下像Unix一样长期稳定的提供服务了。
+【windows下apache及mysql定时自动重启&服务器定时自动重启】
+有时候觉得，服务器运行时间过长，造成服务器内存等压力过大。因此，不用重新启动服务器的情况下，完成apache和mysql的内存释放，是非常有益处的（把重启时间设置在访问量最低的）。
+首先，apache的重新启动。
+有两种apache自动定时重启的方法（两种，第二种可一同时启动apache和mysql，所以推荐一下第二种）：
+第一种、使用任务计划
+开始>>程序>>附件>>管理工具>>任务计划
+添加任务计划>>下一步>>apache restart>>选择时间（可以设置的为每天凌晨2-4点）>>一路确定即可。
+第二种（个人觉得比较简单，同样也是任务计划） 采用at命令添加计划任务
+1、在c:盘根目录新建一个apacheautostart.bat文件，然后右键编辑，将文件内容设为如下后保存：
+@ECHO OFF
+net stop apache2
+net start apache2
+net stop mysql
+net start mysql
+
+（附加说明：上面的apache2与mysql为服务名称。）
+2、“开始”－》运行“cmd”－》执行命令“at 04:00 c:\apacheautostart.bat”
+这样每天早晨4点系统就会自动重启apache与mysql
+（附加说明：04:00为重启时间，c:\autostartserver.bat为第一步的bat文件地址）
+mysql的重新启动，也通过上面at命令方法重新启动了，所以推荐一下第二种方法。
+——————————————————————————–
+同样，你也可一给自己的服务器加上一个定时自动重启的功能（比如每周重新启动服务器一次）。
+可以用at命令和shutdown命令配合实现。
+AT命令可以安排在特定日期和时间运行命令和程序，shutdown则可以在命令行下关闭并重启计算机，要在每周日的特定时间自动重启计算机，只需 在命令提示符下输入“at 02:00 /every:星期一 shutdown /l /r /y /c”，这将在每周一的凌晨2点自动重启计算机。
+有关at命令和shutdown命令的更详尽信息，请在Windows Server 2003的命令提示符下输入“at /?”和“shutdown /?”获得，或者在http://support.microsoft.com/kb/317371/zh-cn，也有微软官方知识库中的相关文章。
+    本文原文出处飘易没有找到，原作者如有看到，请留下网址，我会补充链接进来。
+    【Windows下如何开启 apache的 apache-status监控功能】：
+httpd.conf中，加载模块： 
+把 LoadModule status_module modules/mod_status.so 这句加上，如果前面有带#号，开启的话，需要将#去除，并加入：
+<location /server-status>
+         SetHandler server-status
+         Order Deny,Allow
+         Deny from all
+         Allow from localhost
+</location>
+ExtendedStatus On
+
+这是一个完整的server-status的配置。
+配置完成，重新启动apache即可（注意，不能直接restart，而要先stop，再start）
+可以用http://localhost/server-status来访问，同时
+http://localhostm/server-status?refresh=N将表示访问状态页面可以每N秒自动刷新一次；
+Deny from表示禁止的访问地址；
+Allow from表示允许的地址访问；
+ExtendedStatus On 表示的是待会访问的时候能看到详细的请求信息，另外该设置仅能用于全局设置，不能在特定的虚拟主机中打开或关闭。启用扩展状态信息将会导致服务器运行效率降低。
+【补充】：
+1、关于Apache参数ThreadsPerChild 和 MaxRequestsPerChild 的说明详见官方网址：http://httpd.apache.org/docs/2.2/mod/mpm_common.html
+2、中文版 Apache mpM指令：http://lamp.linux.gov.cn/Apache/ApacheMenu/mod/mpm_common.html
+--------------------------------------------------------------------------------------------------------------------------------------

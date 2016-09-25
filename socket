@@ -1,0 +1,138 @@
+===============================
+一下笔记均需要引用以下命名空间
+===============================
+using System.Net;               // 引入这两个命名空间，以下同
+using System.Net.Sockets;
+===============================
+参考网站：
+===============================
+https://msdn.microsoft.com/zh-cn/library/system.net.sockets.socket(v=vs.110).aspx
+===============================
+
+===============================
+服务器端建立监听端口
+===============================
+1)实例化ip地址类
+IPAddress ip = new IPAddress(new byte[] { 127, 0, 0, 1 });
+2)实例化监听类
+TcpListener listener = new TcpListener(ip, 8500);
+3)开启监听
+listener.Start();
+===============================
+
+===============================
+建立客户端连接服务器
+===============================
+1)实例化客户端实例
+TcpClient client = new TcpClient();
+2)连接服务端
+client.Connect("localhost", 8500);
+Note:这句最好捕捉下异常
+===============================
+
+===============================
+服务器端获取客户端信息方法
+===============================
+1)服务端实例化一个客户端实例存储客户端
+TcpClient remoteClient = listener.AcceptTcpClient();
+Note:.AcceptTcpClient()
+方法会一直等待客户端连接到服务器
+才会继续执行
+===============================
+
+===============================
+一个服务端收多个客户端的连接
+===============================
+while (true) {
+	TcpClient remoteClient = listener.AcceptTcpClient();
+}
+Note:以上代码并非死循环，当执行到.AcceptTcpClient()方法，若没有客户端连接那么就不会继续执行。
+===============================
+
+===============================
+*******************************
+**           非常重要！      **
+*******************************
+===============================
+接下去会涉及到2个数据流
+NetworkStream 
+这个数据流建立在客户端和服务器之间，当写入这个数据流的数据将会被发送到链接的终端
+MemoryStream 
+这个数据流是用户缓存NetworkStream数据流的本地数据流，若将NetworkStream看做一条无法控制停止的传送带，那么本地的MemoryStream是可以由我们接收方控制停止和暂停的传送带。
+===============================
+
+===============================
+客户端发送数据到服务器
+===============================
+1)声明一个链接数据流，保存客户端与服务端之间的数据流线路。
+NetworkStream streamToServer = client.GetStream();
+2)将消息转化为byte数组流准备写入到数据流线路发送到服务器。
+byte[] buffer = Encoding.Unicode.GetBytes(msg);
+//msg变量为要发送的信息内容
+3)写入到数据流，发送到服务器
+streamToServer.Write(buffer, 0, buffer.Length); 
+(Note:这里说NetworkStream这个数据流不能控制暂停就是这个的原因，客户端有数据就会全部扔向网络数据流线路中！)
+===============================
+
+===============================
+服务端接受客户端发来的数据
+===============================
+1)声明一个客户端实例，保存连接到服务器的客户端。
+TcpClient remoteClient = listener.AcceptTcpClient();
+2)实例化一个数据流类，接受客户端传来的数据
+NetworkStream streamToClient = remoteClient.GetStream();
+3)声明个长为BufferSize的缓存数组存储缓存数据
+byte[] buffer = new byte[BufferSize];
+4)获取缓存数据长度
+int bytesRead = streamToClient.Read(buffer, 0, BufferSize);
+5)获取缓存中的字符串
+string msg = Encoding.Unicode.GetString(buffer, 0, bytesRead);
+===============================
+
+===============================
+读取信息的缓存方法扩展
+===============================
+代码：
+byte[] buffer = new byte[BufferSize];
+//BufferSize规定缓存池的长度
+int bytesRead;//一次读取的字节数
+MemoryStream msStream = new MemoryStream();
+//缓存池
+do {
+    bytesRead = streamToClient.Read(buffer, 0, BufferSize);
+    msStream.Write(buffer, 0, bytesRead);
+    //写入缓冲池
+} while (bytesRead > 0);
+
+buffer = msStream.GetBuffer();
+string msg = Encoding.Unicode.GetString(buffer);
+===============================
+
+===============================
+关于.Read()和.Write()方法
+===============================
+int Read(byte[] buffer, int offset, int size)
+*******************************
+参数:
+buffer: 保存比特数据的比特数组
+offset: 开始位置
+size: 保存长度
+功能:
+保存数据流从offset开始长度为size的比特数据到buffer数组并返回成功的长度值。
+===============================
+public override void Write( byte[] buffer, int offset, int count)
+*******************************
+参数:
+buffer: 保存比特数据的比特数组
+offset: 开始位置
+size: 保存长度
+功能:
+保存buffer中从offset开始长度为size的比特数据到数据流中。
+===============================
+
+===============================
+
+===============================
+===============================
+===============================
+===============================

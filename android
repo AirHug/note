@@ -1,0 +1,110 @@
+安装HAXM硬件加速器
+https://software.intel.com/zh-cn/android/articles/intel-hardware-accelerated-execution-manager-end-user-license-agreement
+======================================================================
+gradle文件
+项目下的build.gradle是基于整个project的配置
+module下的build.gradle是基于整个module的配置
+语法相同
+======================================================================
+ //下面声明的是gradle插件的版本
+dependencies {
+    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+}
+ //项目下配置整个项目依赖的仓库,这样每个module就不用配置仓库了
+allprojects {
+     repositories {
+          jcenter()
+     }
+}
+//声明插件，这是一个android程序，如果是android库，应该是com.android.library
+apply plugin: 'com.android.application'
+
+android {
+     //安卓构建过程需要配置的参数
+     compileSdkVersion 21//编译版本
+     buildToolsVersion "21.1.2"//buildtool版本
+     defaultConfig {//默认配置，会同时应用到debug和release版本上
+     applicationId "com.taobao.startupanim"//包名
+     minSdkVersion 15
+     targetSdkVersion 21
+     versionCode 1
+     versionName "1.0"
+}
+
+buildTypes {
+     //这里面可以配置debug和release版本的一些参数，比如混淆、签名配置等
+     release {
+         //release版本
+         minifyEnabled false//是否开启混淆
+         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//混淆文件位置
+     }
+}
+
+dependencies {
+     //模块依赖
+     compile fileTree(dir: 'libs', include: ['*.jar'])//依赖libs目录下所有jar包
+     compile 'com.android.support:appcompat-v7:21.0.3'//依赖appcompat库
+}
+======================================================================
+1.gradle.properties：
+配置文件，可以定义一些常量供build.gradle使用，比如可以配置签名相关信息如keystore位置，密码，keyalias等。
+
+2.settings.gradle：
+这个文件是用来配置多模块的，比如你的项目有两个模块module-a,module-b,那么你就需要在这个文件中进行配置，格式如下：
+include ':module-a',':module-b'
+
+3.gradle文件夹：
+这里面有两个文件，gradle-wrapper.jar和gradle-wrapper.properties,它们就是gradle wrapper。gradle项目都会有，你可以通过命令gradle init来创建它们（前提是本地安装了gradle并且配置到了环境变量中）。
+
+4.gradlew和gradlew.bat:
+这分别是linux下的shell脚本和windows下的批处理文件，它们的作用是根据gradle-wrapper.properties文件中的distributionUrl下载对应的gradle版本。这样就可以保证在不同的环境下构建时都是使用的统一版本的gradle，即使该环境没有安装gradle也可以，因为gradle wrapper会自动下载对应的gradle版本。
+gradlew的用法跟gradle一模一样，比如执行构建gradle build命令，你可以用gradlew build。gradlew即gradle wrapper的缩写。
+======================================================================
+2.gradle仓库：
+gradle有三种仓库，maven仓库，ivy仓库以及flat本地仓库。声明方式如下：
+maven{
+      url "..."
+}
+ivy{
+      url "..."
+}
+flatDir{
+      dirs 'xxx'
+}
+
+======================================================================
+java 转 kotlin 
+======================================================================
+Idea：
+
+ctrl+shift+A
+convert java file to Kotlin file
+config kotlin in project
+======================================================================
+
+===============================
+implements 和 interface
+===============================
+public interface people() 
+{ 
+   public say(); 
+}
+接口没有方法体。 
+只能通过一个具体的类去实现其中的方法体。
+public class chinese implements peopel{  
+    public say(){
+        System.out.println("你好！");
+    }
+}
+===============================
+
+===============================
+生命周期
+===============================
+启动Activity：onCreate->onStart->onResume
+暂停Activit：onPause->onStop->onDestory

@@ -1,0 +1,3 @@
+"endroid/qrcode": "^1.6" 二维码
+"mews/captcha": "~2.0"   验证码
+composer require zizaco/entrust 5.2.x-dev RBAC

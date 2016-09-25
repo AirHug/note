@@ -1,0 +1,2059 @@
+**********************
+*   laravel basics
+**********************
+===============================
+laravel a 标签写法
+===============================
+1.{{url('[路由前缀]',变量参数)}}
+2.{{action('控制器@方法')}}
+2.{{asset('资源路径')}}
+===============================
+
+===============================
+laravel的强大数据库连接方式
+===============================
+1)环境配置文件./.env
+的代码片段
+(不同版本可能有微小差别)
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+(填写以上数据库信息)
+2)数据库设置文件
+./config/database.php
+'default' => env('DB_CONNECTION', 'mysql'),
+(Note:默认设置,读取.env文件的DB_CONNECTION属性，默认值为mysql)
+Line 47附近:'connections'=>[...]
+(这个文件里写数据库的配置信息)
+===============================
+填写以上2个文件，laravel就可以很方便的帮你包装数据库并很完美的调用数据库数据
+===============================
+
+**********************
+*       gulp
+**********************
+
+===============================
+node.js ver 5.0.0~
+自带npm插件
+===============================
+
+===============================
+npm 安装gulp出错
+===============================
+1)npm install
+===============================
+
+*************************
+*    database config
+* 文件config/database.php
+*************************
+
+===============================
+属性
+===============================
+1)default 默认数据库
+2)connections 数据库连接信息，与.evn文件关联。可设置多个用于网站链接多个数据库。
+===============================
+
+************************
+*      migration
+************************
+
+===============================
+laravel migrate 创建表
+===============================
+1)php artisan make:migration create_[表名]_table --create=[表名]
+创表文件
+2)./database/migrations/create_[表名]_table.php
+Line 13:up() 编写字段信息
+(Note:https://laravel.com/docs/5.2/migrations)
+3)php artisan migrate
+===============================
+Schema::connection('链接名')->create(...) //指定在哪个数据库建立本表
+===============================
+
+===============================
+laravel migrate 添加字段
+===============================
+1)php artisan make:migration add_[字段名]_column_to_[表名] --table=[表名]
+2）./database/migrations/add_[字段名]_column_to_[表名].php
+Line 13:up() 编写字段信息
+(Note:https://laravel.com/docs/5.2/migrations)
+3)./database/migrations/add_[字段名]_column_to_[表名].php
+Line 25:down() 编写drop代码
+(Note:需要项目包doctrine/dbal cmd:composer require doctrine/dbal)
+===============================
+扩展方法
+1)->first(); // 放到第一列（仅mysql）
+2)->after('column'); // 放到某一列后面（仅mysql）
+3)->nullable(); // 允许空值
+4)->default($value); // 默认值
+5)->unsigned(); // 设置整形变量非负
+6)->comment('my comment'); // 添加注释
+7)$table->foreign('本表外键')->references('关联外键')->on('关联外键所在表'); // 添加外键
+8)$table->dropForeign('本表外键'); // 删除外键
+9)Schema::enableForeignKeyConstraints(); //启用外键
+10)Schema::disableForeignKeyConstraints(); //禁用外键
+===============================
+
+===============================
+PDOException:could not find dirver
+===============================
+1)IIS:PHP Manager 
+Enable php_pdo_mysql.dll
+===============================
+
+**********************
+*      model
+* 文件model.php
+**********************
+
+===============================
+model 属性
+===============================
+1)protected $connection  = 'connection-name'; //不想连接到默认数据库时可选择填写本属性
+2)protected $table = '关联表表名';
+3)protected $primaryKey = '主键名'; //设置主键名
+4)protected $perPage = 15; //分页系统每页数据数
+5)protected $incrementing = false; //启用非自增或非数字主键
+6)protected $timestamps = false; //不开启自动更新 created_at 和 updated_at 字段
+7)protected $dateFormat = 'U'; //规定模型中时间字段的存储方式
+8)protected $hidden = ['attr1','attr2'...]; //规定隐藏的属性
+9)protected $visible = ['attr1','attr2'...]; //规定显示的属性
+===============================
+
+===============================
+laravel model 
+创建数据库模型
+===============================
+1)php artisan make:model [模型名]
+(Note:articles(表名)=>article(模型名))
+模型文件路径
+./app/模型名.php
+===============================
+
+===============================
+php tinker
+===============================
+1)php artisan tinker
+===============================
+用模型插入数据一
+===============================
+(1)$value=new App\[模型名];
+//创建模型实例
+(2)$value->(字段名)=(字段值);
+//赋值
+(3)$value->save();
+//保存实例到数据库
+===============================
+--------------------------
+===============================
+用模型插入数据二
+===============================
+(1)./app/[模型名].php
+Line 9:
+Code:protected $fillable=['字段1','字段2','字段3'];
+//设置可填充字段
+(2)重进tinker
+$value=App\[模型名]::create(['字段1'=>'值1'],['字段2'=>'值2'],['字段3'=>'值3']);
+===============================
+--------------------------
+===============================
+用模型搜索数据
+===============================
+===============================
+1.$value=App\[模型名]::find(x);
+//查找id=x的记录
+2.$value=App\[模型名]::where('字段名','逻辑关系','匹配值')->get();
+//where字句(返回二维数组)
+3.$value=App\[模型名]::where('字段名','逻辑关系','匹配值')->frist();
+//查找第一条匹配数据(一维数组)
+(Note:详细方法查看文档)
+===============================
+---------------------------
+===============================
+用模型更新数据
+===============================
+方法1:模型实例查找修改实例然后用save()方法
+方法2:$(实例名)->update(['字段1'=>'值1','字段2'=>'值2']);
+===============================
+---------------------------
+用模型删除数据
+===============================
+方法1:模型实例查找修改实例然后用delete()方法
+方法2:若知道主键名
+App\模型名::destroy(主键);
+App\模型名::destroy([主键1, 主键2, 主键3...]);
+App\模型名::destroy(主键1, 主键2, 主键3...);
+方法3:
+查询删除。
+$deletedRows = App\Flight::where('active', 0)->delete();
+===============================
+---------------------------
+软删除(启用软删除功能后，destory方法将失效)
+===============================
+1)首先数据表中要有deleted_at字段
+$table->softDeletes(); //在migrate文件中用此方法添加该字段
+2)模型中添加
+use Illuminate\Database\Eloquent\SoftDeletes;
+use SoftDeletes;
+3)在模型中添加属性
+protected $dates = ['deleted_at'];
+4)之后调用delete()方法将会填充本字段。
+===============================
+1)->trashed(); //判断是否软删除
+2)App\[模型名]::withTrashed(); //在包括软删除的数据中查找
+2)App\[模型名]::onlyTrashed(); //只在软删除的数据中查找
+3)onlyTrashed()->restore(); //重新恢复数据
+4)->forceDelete(); //真正删除数据
+5)->history(); //无参考文档，功能和restore一模一样
+===============================
+以上代码可以在文件中直接使用
+===============================
+
+**********************
+*   Artisan Console
+**********************
+
+===============================
+laravel 创建命令行指令
+===============================
+1)php artisan make:console Test
+2)./app/Console/Commands/Test.php
+Line 14:set command:name
+Line 21:set description
+Line 38:handle() code 
+example:
+$this->info('hello world');
+3)./app/Console/Kernel.php
+Line 15: Commands\Test::class
+4)end
+===============================
+
+===============================
+laravel 创建定时任务
+===============================
+1)./app/Console/Kernel.php
+schedule():
+$schedule
+->command('lesson:log')
+->everyMinute();
+(Note:https://laravel.com/docs/5.2/scheduling)
+2)cmd:
+php artisan schedule:run
+3)
+===============================
+
+===============
+factory
+===============
+文件路径database/favtories/ModelFactory.php
+===============================
+1)进入tinker
+2)namespace App;
+3)factory(Model::class,n)->make();
+生成n条测试数据；
+4)factory(Model::class,n)->create();
+生成n条测试数据并插入到数据库；
+===============================
+faker本地化
+===============================
+文件目录
+app/Provider/AppServiceProvider.php
+===============================
+1)引入类
+use Faker\Generator as FackerGenerator;
+use Faker\Factory as FackerFactory;
+Note:as后名字可随意
+2)在boot方法中插入
+$this->app->singleton(FackerGenerator::class,function(){
+    return FackerFactory::create('zh_CN');
+});
+Note:支持语言可在项目中找到
+https://github.com/fzaninotto/Faker/tree/master/src/Faker/Provider
+===============================
+
+=================
+seeder
+=================
+1)php artisan make:seeder 种子名
+2)database/seeds/种子名.php
+===============================
+方法1：DatabaseSeeder.php调用其他seed文件
+1)$this->call(种子名::class);
+2)种子中run方法使用factory
+例子：factory(App\User::class,20)->create();
+方法2：直接在DatabaseSeeder中使用factory
+===============================
+DB::table('users')->truncate();//删除表中数据
+===============================
+
+==================
+分页系统
+==================
+1)模型查找所需数据
+$articles=\App\Article::latest()->paginate(15);
+paginate()方法一次读取指定数量的记录;
+2)分页按钮
+在视图文件中
+{!! $articles->appends(['type'=>'article','order'=>'latest'])->render() !!}
+render()方法生成分页html元素，
+appends()方法生成地址栏QueryString参数
+===============================
+
+===============================
+包开发
+===============================
+创建ServiceProvider
+-------------------------------
+php artisan make:provider TestProvider
+
+必定包含的2个方法
+register和boot
+-------------------------------
+路由
+-------------------------------
+file_put_contents(
+    app_path('Http/routes.php'),
+    file_get_contents(__DIR__ . '/stubs/routes/routes.stub'),
+    FILE_APPEND
+);
+路由文件写法(参考Auth源码routes.stub)
+<文件体>
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
+
+</文件体>
+-------------------------------
+视图
+-------------------------------
+$this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
+
+loadViewsFrom方法接收两个参数：视图模板的路径和包名称
+-------------------------------
+发布 配置 资源 视图 控制器 迁移文件
+-------------------------------
+$this->publishes([
+    __DIR__.'/path/to/config/courier.php' => config_path('courier.php'),
+]);
+访问配置信息
+$value = config('courier.option');
+
+app_path()="/app"
+base_path()="/"
+config_path()="/config"
+database_path()="/database"
+public_path()="/public"
+resource_path()="/resources"
+storage_path()="/storage"
+===============================
+
+
+===============================
+三方登录
+===============================
+所需package
+===============================
+laravel/socialite
+overture/socialite
+===============================
+
+===============================
+API开发
+===============================
+返回自定义json
+$data = Data::all();
+response()->json([
+	"status" => "success",
+	"code" => "200",
+	"data" => $data
+]);
+===============================
+替换模型字段
+===============================
+model
+===============================
+private function transfrom($data){
+	return [
+		"title" => $data["title"],
+		"content" => $data["content"],
+		"newKey" => $data["oldKey"]
+	];
+}
+
+private function transformCollection($lessons){
+	return array_map([$this, "transfrom"],$lessons->toArray());
+}
+===============================
+
+===============================
+添加中间件组
+===============================
+['middlewareGroups' => 'web']
+===============================
+
+===============================
+Laravel 5 程序优化技巧
+===============================
+1.配置信息缓存 
+php artisan config:cache 加
+php artisan config:clear 删
+-------------------------------
+把 config 文件夹里所有配置信息合并到一个文件里，减少运行时文件的载入数量
+===============================
+2.路由缓存
+php artisan route:cache 加
+php artisan route:clear 删
+-------------------------------
+路由缓存可以有效的提高路由器的注册效率，
+在大型应用程序中效果越加明显。
+===============================
+3.类映射加载优化
+php artisan optimize --force 加
+php artisan clear-compiled 删
+-------------------------------
+把常用加载的类合并到一个文件里，通过减少文件的加载，来提高运行效率
+===============================
+4.自动加载优化
+composer dumpautoload -o
+-------------------------------
+此命令会把 PSR-0 和 PSR-4 转换为一个类映射表，来提高类的加载速度。
+php artisan optimize --force 命令里已经做了这个操作。
+===============================
+5.使用 Memcached 来存储会话 
+config/session.php
+添加
+'driver' => 'memcached',
+-------------------------------
+改会话的存储方式能有效提高程序效率
+===============================
+6.使用专业缓存驱动器 
+config/cache.php
+添加
+'default' => 'redis',
+-------------------------------
+默认缓存驱动是 file 文件缓存，建议切换到专业的缓存系统，
+如 Redis 或者 Memcached，不建议使用数据库缓存。
+===============================
+7.数据库请求优化
+-------------------------------
+数据关联模型读取时使用 延迟预加载 和 预加载 ；
+使用 Laravel Debugbar 或者 Clockwork 留意每一个页面的总数据库请求数量；
+===============================
+8.为数据集书写缓存逻辑
+$posts = Cache::remember('index.posts', $minutes = 30, function()
+{
+    return Post::with('comments', 'tags', 'author', 'seo')->whereHidden(0)->get();
+});
+-------------------------------
+合理的使用 Laravel 提供的缓存层操作，
+把从数据库里面拿出来的数据集合进行缓存，减少数据库的压力，
+运行在内存上的专业缓存软件对数据的读取也远远快于数据库。
+===============================
+9.使用即时编译器（JIT），
+如：HHVM、OpCache
+参考网站:https://laravel-china.org/topics/301
+-------------------------------
+HHVM 和 OpCache 都能轻轻松松的让你的应用程序在不用做任何修改的情况下，直接提高 50% 或者更高的性能
+===============================
+10.前端资源合并 Elixir
+转至->gulp
+-------------------------------
+作为优化的标准，一个页面只应该加载一个 CSS 和 一个 JS 文件
+===============================
+
+*******************************
+*        laravel code
+*******************************
+===============================
+Illuminate文件目录
+	Auth
+		Access
+			-AuthorizationException.php
+			-Gate.php
+			-HandlesAuthorization.php
+			-Response.php
+		Console
+			stubs
+				make
+					controllers
+						-HomeController.stub
+					views
+						auth
+							emails
+								-password.stub
+							passwords
+								-email.stub
+								-reset.stub
+							-login.stub
+							-register.stub
+						layouts
+							-home.stub
+							-welcome.stub
+			-ClearResetsCommand.php
+			-MakeAuthCommand.php
+		Events
+			-Attempting.php
+			-Failed.php
+			-Lockout.php
+			-Login.php
+			-Logout.php
+		Middleware
+			-AuthenticateWithBasicAuth.php
+		Passwords
+			-CanResetPassword.php
+			-DatabaseTokenRepository.php
+			-PasswordBroker.php
+			-PasswordBrokerManager.php
+			-PasswordResetServiceProvider.php
+			-TokenRepositoryInterface.php
+		-Authenticatable.php
+		-AuthenticationException.php
+		-AuthManager.php
+		-AuthServiceProvider.php
+		-CreatesUserProviders.php
+		-DatabaseUserProvider.php
+		-EloquentUserProvider.php
+		-GenericUser.php
+		-GuardHelpers.php
+		-RequestGuard.php
+		-SessionGuard.php
+		-TokenGuard.php
+	Broadcasting
+		Broadcasters
+			-LogBroadcaster.php
+			-PusherBroadcaster.php
+			-RedisBroadcaster.php
+		-BroadcastEvent.php
+		-BroadcastManager.php
+		-BroadcastServiceProvider.php
+	Bus
+		-BusServiceProvider.php
+		-Dispatcher.php
+		-Queueable.php
+	Cache
+		Consoles
+			stubs
+				-cache.stub
+			-CacheTableCommand.php
+			-ClearCommand.php
+		Events
+		-ApcStore.php
+		-ApcWrapper.php
+		-ArrayStore.php
+		-CacheManager.php
+		-CacheServiceProvider.php
+		-DatabaseStore.php
+		-FileStore.php
+		-MemcachedConnector.php
+		-MemcachedStore.php
+		-NullStore.php
+		-RateLimiter.php
+		-RedisStore.php
+		-RedisTaggedCache.php
+		-Repository.php
+		-RetrievesMultipleKeys.php
+		-TaggableStore.php
+		-TaggedCache.php
+		-TagSet.php
+	Config
+		-Repository.php
+	Console
+		Events
+			-ArtisanStarting.php
+		Scheduling
+			-CallbackEvent.php
+			-Event.php
+			-Schedule.php
+			-ScheduleRunCommand.php
+		-Application.php
+		-AppNamespaceDetectorTrait.php
+		-Command.php
+		-ConfirmableTrait.php
+		-GeneratorCommand.php
+		-OutputStyle.php
+		-Parser.php
+		-ScheduleServiceProvider.php
+	Container
+		-Container.php
+		-ContextualBindingBuilder.php
+	Contracts
+		Auth
+			Access
+				-Authorizable.php
+				-Gate.php
+			-Authenticatable.php
+			-CanResetPassword.php
+			-Factory.php
+			-Guard.php
+			-PasswordBroker.php
+			-PasswordBrokerFactory.php
+			-Registrar.php
+			-StatefulGuard.php
+			-SupportsBasicAuth.php
+			-UserProvider.php
+		Broadcasting
+			-Broadcaster.php
+			-Factory.php
+			-ShouldBroadcast.php
+			-ShouldBroadcastNow.php
+		Bus
+			-Dispatcher.php
+			-QueueingDispatcher.php
+			-SelfHandling.php
+		Cache
+			-Factory.php
+			-Repository.php
+			-Store.php
+		Config
+			-Repository.php
+		Console
+			-Application.php
+			-Kernel.php
+		Container
+			-BindingResolutionException.php
+			-Container.php
+			-ContextualBindingBuilder.php
+		Cookie
+			-Factory.php
+			-QueueingFactory.php
+		DatabaseStore
+			-ModelIdentifier.php
+		Debug
+			-ExceptionHandler.php
+		Encryption
+			-DecryptException.php
+			-Encrypter.php
+			-EncryptException.php
+		Events
+			-Dispatcher.php
+		Filesystem
+			-Cloud.php
+			-Factory.php
+			-FileNotFoundException.php
+			-Filesystem.php
+		Foundation
+			-Application.php
+		Hashing
+			-Hasher.php
+		Http
+			-Kernel.php
+		Logging
+			-Log.php
+		Mail
+			-Mailer.php
+			-MailQueue.php
+		Pagination
+			-LengthAwarePaginator.php
+			-Paginator.php
+			-Presenter.php
+		Pipeline
+			-Hub.php
+			-Pipeline.php
+		Queue
+			-EntityNotFoundException.php
+			-EntityResolver.php
+			-Factory.php
+			-Job.php
+			-Monitor.php
+			-Queue.php
+			-QueueableCollection.php
+			-QueueableEntity.php
+			-ShouldQueue.php
+		Redis
+			-Database.php
+		Routing
+			-Registrar.php
+			-ResponseFactory.php
+			-UrlGenerator.php
+			-UrlRoutable.php
+		Support
+			-Arrayable.php
+			-Htmlable.php
+			-Jsonable.php
+			-MessageBag.php
+			-MessageProvider.php
+			-Renderable.php
+		Validation
+			-Factory.php
+			-UnauthorizedException.php
+			-ValidatesWhenResolved.php
+			-ValidationException.php
+			-Validator.php
+		View
+			-Factory.php
+			-View.php
+	Cookie
+		Middleware
+			-AddQueuedCookiesToResponse.php
+			-EncryptCookies.php
+		-CookieJar.php
+		-CookieServiceProvider.php
+	Database
+		Capsule
+			-Manager.php
+		Connectors
+			-ConnectionFactory.php
+			-Connector.php
+			-ConnectorInterface.php
+			-MySqlConnector.php
+			-PostgresConnector.php
+			-SQLiteConnector.php
+			-SqlServerConnector.php
+		Console
+			Migrations
+				-BaseCommand.php
+				-InstallCommand.php
+				-MigrateCommand.php
+				-MigrateMakeCommand.php
+				-RefreshCommand.php
+				-ResetCommand.php
+				-RollbackCommand.php
+				-StatusCommand.php
+			Seeds
+				stubs
+					-seeder.stub
+				-SeedCommand.php
+				-SeederMakeCommand.php
+		Eloquent
+			Relations
+				-BelongsTo.php
+				-BelongsToMany.php
+				-HasMany.php
+				-HasManyThrough.php
+				-HasOne.php
+				-HasOneOrMany.php
+				-MorphMany.php
+				-MorphOne.php
+				-MorphOneOrMany.php
+				-MorphPivot.php
+				-MorphTo.php
+				-MorphToMany.php
+				-Pivot.php
+				-Relation.php
+			-Builder.php
+			-Collection.php
+			-Factory.php
+			-FactoryBuilder.php
+			-MassAssignmentException.php
+			-Model.php
+			-ModelNotFoundException.php
+			-QueueEntityResolver.php
+			-Scope.php
+			-ScopeInterface.php
+			-SoftDeletes.php
+			-SoftDeletingScope.php
+		Events
+			-ConnectionEvent.php
+			-QueryExecuted.php
+			-TransactionBeginning.php
+			-TransactionCommitted.php
+			-TransactionRolledBack.php
+		Migrations
+			stubs
+				-blank.stub
+				-create.stub
+				-update.stub
+			-DatabaseMigrationRepository.php
+			-Migration.php
+			-MigrationCreator.php
+			-MigrationRepositoryInterface.php
+			-Migrator.php
+		Query
+			Grammars
+				-Grammar.php
+				-MySqlGrammar.php
+				-PostgresGrammar.php
+				-SQLiteGrammar.php
+				-SqlServerGrammar.php
+			Processors
+				-MySqlProcessor.php
+				-PostgresProcessor.php
+				-Processor.php
+				-SQLiteProcessor.php
+				-SqlServerProcessor.php
+			-Builder.php
+			-Expression.php
+			-JoinClause.php
+			-JsonExpression.php
+		Schema
+			Grammars
+				-Grammar.php
+				-MySqlGrammar.php
+				-PostgresGrammar.php
+				-SQLiteGrammar.php
+				-SqlServerGrammar.php
+			-Blueprint.php
+			-Builder.php
+			-MySqlBuilder.php
+			-PostgresBuilder.php
+		-Connection.php
+		-ConnectionInterface.php
+		-ConnectionResolver.php
+		-ConnectionResolverInterface.php
+		-DatabaseManager.php
+		-DatabaseServiceProvider.php
+		-DetectsLostConnections.php
+		-Grammar.php
+		-MigrationServiceProvider.php
+		-MySqlConnection.php
+		-PostgresConnection.php
+		-QueryException.php
+		-Seeder.php
+		-SeedServiceProvider.php
+		-SQLiteConnection.php
+		-SqlServerConnection.php
+	Encryption
+		-BaseEncrypter.php
+		-Encrypter.php
+		-EncryptionServiceProvider.php
+		-McryptEncrypter.php
+	Events
+		-CallQueuedHandler.php
+		-Dispatcher.php
+		-EventServiceProvider.php
+	Filesystem
+		-ClassFinder.php
+		-Filesystem.php
+		-FilesystemAdapter.php
+		-FilesystemManager.php
+		-FilesystemServiceProvider.php
+	Foundation
+		Auth
+			Access
+				-Authorizable.php
+				-AuthorizesRequests.php
+				-AuthorizesResources.php
+			-AuthenticatesAndRegistersUsers.php
+			-AuthenticatesUsers.php
+			-RedirectsUsers.php
+			-RegistersUsers.php
+			-ResetsPasswords.php
+			-ThrottlesLogins.php
+			-User.php
+		Bootstrap
+			-BootProviders.php
+			-ConfigureLogging.php
+			-DetectEnvironment.php
+			-HandleExceptions.php
+			-LoadConfiguration.php
+			-RegisterFacades.php
+			-RegisterProviders.php
+			-SetRequestForConsole.php
+		Bus
+			-DispatchesJobs.php
+		Console
+			Optimize
+				-config.php
+			stubs
+				-console.stub
+				-event.stub
+				-event-handler.stub
+				-event-handler-queued.stub
+				-job.stub
+				-job-queued.stub
+				-listener.stub
+				-listener-queued.stub
+				-model.stub
+				-policy.stub
+				-provider.stub
+				-request.stub
+				-routes.stub
+				-test.stub
+			-AppNameCommand.php
+			-ClearCompiledCommand.php
+			-ConfigCacheCommand.php
+			-ConfigClearCommand.php
+			-ConsoleMakeCommand.php
+			-DownCommand.php
+			-EnvironmentCommand.php
+			-EventGenerateCommand.php
+			-EventMakeCommand.php
+			-IlluminateCaster.php
+			-JobMakeCommand.php
+			-Kernel.php
+			-KeyGenerateCommand.php
+			-ListenerMakeCommand.php
+			-ModelMakeCommand.php
+			-OptimizeCommand.php
+			-PolicyMakeCommand.php
+			-ProviderMakeCommand.php
+			-QueuedJob.php
+			-RequestMakeCommand.php
+			-RouteCacheCommand.php
+			-RouteClearCommand.php
+			-RouteListCommand.php
+			-ServeCommand.php
+			-TestMakeCommand.php
+			-TinkerCommand.php
+			-UpCommand.php
+			-VendorPublishCommand.php
+			-ViewClearCommand.php
+		Exceptions
+			-Handler.php
+		Http
+			Middleware
+				-Authorize.php
+				-CheckForMaintenanceMode.php
+				-VerifyCsrfToken.php
+				-VerifyPostSize.php
+			-FormRequest.php
+			-Kernel.php
+		Providers
+			-ArtisanServiceProvider.php
+			-ComposerServiceProvider.php
+			-ConsoleSupportServiceProvider.php
+			-FoundationServiceProvider.php
+		Support
+			Providers
+				-AuthServiceProvider.php
+				-EventServiceProvider.php
+				-RouteServiceProvider.php
+		Testing
+			Concerns
+				-ImpersonatesUsers.php
+				-InteractsWithAuthentication.php
+				-InteractsWithConsole.php
+				-InteractsWithContainer.php
+				-InteractsWithDatabase.php
+				-InteractsWithPages.php
+				-InteractsWithSession.php
+				-MakesHttpRequests.php
+				-MocksApplicationServices.php
+			Constraints
+				-FormFieldConstraint.php
+				-HasElement.php
+				-HasInElement.php
+				-HasLink.php
+				-HasSource.php
+				-HasText.php
+				-HasValue.php
+				-IsChecked.php
+				-IsSelected.php
+				-PageConstraint.php
+				-ReversePageConstraint.php
+			-DatabaseMigrations.php
+			-DatabaseTransactions.php
+			-HttpException.php
+			-TestCase.php
+			-WithoutEvents.php
+			-WithoutMiddleware.php
+		Validation
+			-ValidatesRequests.php
+			-ValidationException.php
+		-AliasLoader.php
+		-Application.php
+		-ComposerScripts.php
+		-EnvironmentDetector.php
+		-helpers.php
+		-Inspiring.php
+		-ProviderRepository.php
+	Hashing
+		-BcryptHasher.php
+		-HashServiceProvider.php
+	Http
+		Exception
+			-HttpResponseException.php
+			-PostTooLargeException.php
+		Middleware
+			-CheckResponseForModifications.php
+			-FrameGuard.php
+		-JsonResponse.php
+		-RedirectResponse.php
+		-Request.php
+		-Response.php
+		-ResponseTrait.php
+		-UploadedFile.php
+	Log
+		-Writer.php
+	Mail
+		Events
+			-MessageSending.php
+		Transport
+			-LogTransport.php
+			-MailgunTransport.php
+			-MandrillTransport.php
+			-SesTransport.php
+			-SparkPostTransport.php
+			-Transport.php
+		-Mailer.php
+		-MailServiceProvider.php
+		-Message.php
+		-TransportManager.php
+	Pagination
+		-AbstractPaginator.php
+		-BootstrapFourNextPreviousButtonRendererTrait.php
+		-BootstrapFourPresenter.php
+		-BootstrapThreeNextPreviousButtonRendererTrait.php
+		-BootstrapThreePresenter.php
+		-LengthAwarePaginator.php
+		-PaginationServiceProvider.php
+		-Paginator.php
+		-SimpleBootstrapFourPresenter.php
+		-SimpleBootstrapThreePresenter.php
+		-UrlWindow.php
+		-UrlWindowPresenterTrait.php
+	Pipeline
+		-Hub.php
+		-Pipeline.php
+		-PipelineServiceProvider.php
+	Queue
+		Capsule
+			-Manager.php
+		Connectors
+			-BeanstalkdConnector.php
+			-ConnectorInterface.php
+			-DatabaseConnector.php
+			-NullConnector.php
+			-RedisConnector.php
+			-SqsConnector.php
+			-SyncConnector.php
+		Console
+			stubs
+				-failed_jobs.stub
+				-jobs.stub
+			-FailedTableCommand.php
+			-FlushFailedCommand.php
+			-ForgetFailedCommand.php
+			-ListenCommand.php
+			-ListFailedCommand.php
+			-RestartCommand.php
+			-RetryCommand.php
+			-TableCommand.php
+			-WorkCommand.php
+		Events
+			-JobExceptionOccurred.php
+			-JobFailed.php
+			-JobProcessed.php
+			-JobProcessing.php
+			-WorkerStopping.php
+		Failed
+			-DatabaseFailedJobProvider.php
+			-FailedJobProviderInterface.php
+			-NullFailedJobProvider.php
+		Jobs
+			-BeanstalkdJob.php
+			-DatabaseJob.php
+			-Job.php
+			-RedisJob.php
+			-SqsJob.php
+			-SyncJob.php
+		-BeanstalkdQueue.php
+		-CallQueuedHandler.php
+		-ConsoleServiceProvider.php
+		-DatabaseQueue.php
+		-IlluminateQueueClosure.php
+		-InteractsWithQueue.php
+		-Listener.php
+		-NullQueue.php
+		-Queue.php
+		-QueueManager.php
+		-QueueServiceProvider.php
+		-RedisQueue.php
+		-SerializesModels.php
+		-SqsQueue.php
+		-SyncQueue.php
+		-Worker.php
+	Redis
+		-Database.php
+		-RedisServiceProvider.php
+	Routing
+		Console
+			stubs
+				-controller.plain.stub
+				-controller.stub
+				-middleware.stub
+			-ControllerMakeCommand.php
+			-MiddlewareMakeCommand.php
+		Events
+			-RouteMatched.php
+		Exceptions
+			-UrlGenerationException.php
+		Matching
+			-HostValidator.php
+			-MethodValidator.php
+			-SchemeValidator.php
+			-UriValidator.php
+			-ValidatorInterface.php
+		Middleware
+			-ThrottleRequests.php
+		-Controller.php
+		-ControllerDispatcher.php
+		-ControllerInspector.php
+		-ControllerMiddlewareOptions.php
+		-Pipeline.php
+		-Redirector.php
+		-ResourceRegistrar.php
+		-ResponseFactory.php
+		-Route.php
+		-RouteCollection.php
+		-RouteDependencyResolverTrait.php
+		-Router.php
+		-RoutingServiceProvider.php
+		-UrlGenerator.php
+	Session
+		Console
+			stubs
+				-database.stub
+			-SessionTableCommand.php
+		Middleware
+		-CacheBasedSessionHandler.php
+		-CookieSessionHandler.php
+		-DatabaseSessionHandler.php
+		-EncryptedStore.php
+		-ExistenceAwareInterface.php
+		-FileSessionHandler.php
+		-LegacyDatabaseSessionHandler.php
+		-SessionInterface.php
+		-SessionManager.php
+		-Store.php
+		-TokenMismatchException.php
+	Support
+		Debug
+			-Dumper.php
+			-HtmlDumper.php
+		Facades
+			-App.php
+			-Artisan.php
+			-Auth.php
+			-Blade.php
+			-Bus.php
+			-Cache.php
+			-Config.php
+			-Cookie.php
+			-Crypt.php
+			-DB.php
+			-Event.php
+			-Facade.php
+			-File.php
+			-Gate.php
+			-Hash.php
+			-Input.php
+			-Lang.php
+			-Log.php
+			-Mail.php
+			-Password.php
+			-Queue.php
+			-Redirect.php
+			-Redis.php
+			-Request.php
+			-Response.php
+			-Route.php
+			-Schema.php
+			-Session.php
+			-Storage.php
+			-URL.php
+			-Validator.php
+			-View.php
+		Traits
+			-CapsuleManagerTrait.php
+			-Macroable.php
+		-AggregateServiceProvider.php
+		-Arr.php
+		-ClassLoader.php
+		-Collection.php
+		-Composer.php
+		-Fluent.php
+		-helpers.php
+		-HtmlString.php
+		-Manager.php
+		-MessageBag.php
+		-NamespacedItemResolver.php
+		-Pluralizer.php
+		-ServiceProvider.php
+		-Str.php
+		-ViewErrorBag.php
+	Translation
+		-ArrayLoader.php
+		-FileLoader.php
+		-LoaderInterface.php
+		-TranslationServiceProvider.php
+		-Translator.php
+	Validation
+		-DatabasePresenceVerifier.php
+		-Factory.php
+		-PresenceVerifierInterface.php
+		-ValidatesWhenResolvedTrait.php
+		-ValidationException.php
+		-ValidationServiceProvider.php
+		-Validator.php
+	View
+		Compilers
+			-BladeCompiler.php
+			-Compiler.php
+			-CompilerInterface.php
+		Engines
+			-CompilerEngine.php
+			-Engine.php
+			-EngineInterface.php
+			-EngineResolver.php
+			-PhpEngine.php
+		Middleware
+			-ShareErrorsFromSession.php
+		-Expression.php
+		-Factory.php
+		-FileViewFinder.php
+		-View.php
+		-ViewFinderInterface.php
+		-ViewServiceProvider.php
+===============================
+
+=================================================================================================================================
+laravel 框架启动略解
+===============================
+1、初始化Application
+
+// realpath(__DIR__.'/../') 为web应用目录
+// 如 D:\www\laravel5.1\
+$app = new Illuminate\Foundation\Application(
+    realpath(__DIR__.'/../')
+);
+接下来调用 Application类的构造方法
+
+    /**
+     * Create a new Illuminate application instance.
+     *
+     * @param  string|null  $basePath
+     * @return void
+     */
+    public function __construct($basePath = null)
+    {   
+        // 注册基本绑定 这一步主要是把app和Illuminate\Container\Container指向Application实例，并添加到instances属性里
+        $this->registerBaseBindings();
+        // 注册基本服务提供者，添加到bindings属性里
+        $this->registerBaseServiceProviders();
+        // 注册核心类的别名, 添加到aliases属性里
+        $this->registerCoreContainerAliases();
+    // 设置根路径，添加到instances属性里
+        if ($basePath) {
+            $this->setBasePath($basePath);
+        }
+    }
+1.1 注册基本绑定
+
+    /**
+     * Register the basic bindings into the container.
+     *
+     * @return void
+     */
+    protected function registerBaseBindings()
+    {
+        // $this Application实例
+        static::setInstance($this);
+        // app指向Illuminate\Foundation\Application实例
+        $this->instance('app', $this);
+        // Illuminate\Container\Container指向Illuminate\Foundation\Application实例
+        $this->instance('Illuminate\Container\Container', $this);
+        //dd($this->instances);
+    }
+输出$this->instances结果为：
+
+array:2 [▼
+  "app" => Application {#2 ▶}
+  "Illuminate\Container\Container" => Application {#2 ▶}
+]
+1.2 注册基本服务提供者
+
+    /**
+     * Register all of the base service providers.
+     *
+     * @return void
+     */
+    protected function registerBaseServiceProviders()
+    { 
+      // 注册事件服务提供者        
+      $this->register(new EventServiceProvider($this));
+      // 注册路由服务提供者  
+      $this->register(new RoutingServiceProvider($this));
+    }
+EventServiceProvider 继承 Illuminate\Support\ServiceProvider类，实例化时会先调用ServiceProvider的构造方法
+
+    /**
+     * Create a new service provider instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return void
+     */
+    public function __construct($app)
+    {   // 将Application实例赋值给当前对象的成员变量
+        $this->app = $app;
+    }
+register方法
+
+   /**
+     * Register a service provider with the application.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  array  $options
+     * @param  bool   $force
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function register($provider, $options = [], $force = false)
+    {   
+
+        if ($registered = $this->getProvider($provider) && ! $force) {
+
+            return $registered;
+        }
+
+        // If the given "provider" is a string, we will resolve it, passing in the
+        // application instance automatically for the developer. This is simply
+        // a more convenient way of specifying your service provider classes.
+        if (is_string($provider)) {
+            $provider = $this->resolveProviderClass($provider);
+        }
+
+    // 这里调用的是EventServiceProvider类的register方法
+        $provider->register();
+
+        // Once we have registered the service we will iterate through the options
+        // and set each of them on the application so they will be available on
+        // the actual loading of the service objects and for developer usage.
+        foreach ($options as $key => $value) {
+            $this[$key] = $value;
+        }
+
+        $this->markAsRegistered($provider);
+
+        // If the application has already booted, we will call this boot method on
+        // the provider class so it has an opportunity to do its boot logic and
+        // will be ready for any usage by the developer's application logics.
+        if ($this->booted) {
+            $this->bootProvider($provider);
+        }
+
+        return $provider;
+    }
+EventServiceProvider类的register方法
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {   
+        // 调用Application实例的singleton方法，该方法继承自
+        // Illuminate\Container\Container.php
+        $this->app->singleton('events', function ($app) {
+            return (new Dispatcher($app))->setQueueResolver(function () use ($app) {
+                return $app->make('Illuminate\Contracts\Queue\Factory');
+            });
+        });
+    }
+
+ /**
+     * Register a shared binding in the container.
+     *
+     * @param  string|array  $abstract
+     * @param  \Closure|string|null  $concrete
+     * @return void
+     */
+    public function singleton($abstract, $concrete = null)
+    {   // 注册绑定
+        $this->bind($abstract, $concrete, true);
+    }
+在bind方法中将event添加到 binding中
+
+$this->bindings[$abstract] = compact('concrete', 'shared');
+1
+这时输出$this->bindings结果如下
+
+array:1 [▼
+  "events" => array:2 [▼
+    "concrete" => Closure {#4 ▶}
+    "shared" => true
+  ]
+]
+markAsRegistered方法
+
+    /**
+     * Mark the given provider as registered.
+     *
+     * @param  \Illuminate\Support\ServiceProvider  $provider
+     * @return void
+     */
+    protected function markAsRegistered($provider)
+    {   
+        // 这里要特别主要 $this['events']，调用的是数组中不存在的key
+        $this['events']->fire($class = get_class($provider), [$provider]);
+        $this->serviceProviders[] = $provider;
+
+        $this->loadedProviders[$class] = true;
+
+    }
+注：因为该类实现了 ArrayAccess接口，当调用数组中不存在的key时，会调用 ArrayAccess::offsetGet 方法（具体自行参考PHP参考文档ArrayAccess），这个方法在Illuminate\Container\Container.php中实现
+    /**
+     * Get the value at a given offset.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function offsetGet($key)
+    { 
+        return $this->make($key);
+    }
+接下来的部分是RoutingServiceProvider
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {   
+        $this->registerRouter();
+
+        $this->registerUrlGenerator();
+
+        $this->registerRedirector();
+
+        $this->registerPsrRequest();
+
+        $this->registerPsrResponse();
+
+        $this->registerResponseFactory();
+        //dd($this->app);
+    }
+这部分的目的主要是绑定关系，从输出结果我们可以明显看出
+
+Application {#2 ▼
+  #basePath: null
+  #hasBeenBootstrapped: false
+  #booted: false
+  #bootingCallbacks: []
+  #bootedCallbacks: []
+  #terminatingCallbacks: []
+  #serviceProviders: array:1 [▶]
+  #loadedProviders: array:1 [▶]
+  #deferredServices: []
+  #monologConfigurator: null
+  #databasePath: null
+  #storagePath: null
+  #environmentPath: null
+  #environmentFile: ".env"
+  #namespace: null
+  #resolved: array:1 [▶]
+  #bindings: array:7 [▼
+    "events" => array:2 [▶]
+    "router" => array:2 [▶]
+    "url" => array:2 [▶]
+    "redirect" => array:2 [▶]
+    "Psr\Http\Message\ServerRequestInterface" => array:2 [▶]
+    "Psr\Http\Message\ResponseInterface" => array:2 [▶]
+    "Illuminate\Contracts\Routing\ResponseFactory" => array:2 [▶]
+  ]
+注：在调用registerRouter方法时，也就是下面这段代码
+    /**
+     * Register the router instance.
+     *
+     * @return void
+     */
+    protected function registerRouter()
+    {   
+        // 这里是一个赋值操作，因为实现了ArrayAccess接口，如果$this->app['router']不存在，则会调用ArrayAccess::offsetSet方法，也就是（Illuminate\Container\Container.php里的offsetSet方法）。
+        $this->app['router'] = $this->app->share(function ($app) {
+            return new Router($app['events'], $app);
+        });
+    }
+1.3 注册核心类别名 
+通过输出$this->app得到以下结果，在aliases数组中可以看到对应关系
+
+Application {#2 ▼
+  #basePath: null
+  #hasBeenBootstrapped: false
+  #booted: false
+  #bootingCallbacks: []
+  #bootedCallbacks: []
+  #terminatingCallbacks: []
+  #serviceProviders: array:2 [▶]
+  #loadedProviders: array:2 [▶]
+  #deferredServices: []
+  #monologConfigurator: null
+  #databasePath: null
+  #storagePath: null
+  #environmentPath: null
+  #environmentFile: ".env"
+  #namespace: null
+  #resolved: array:1 [▶]
+  #bindings: array:7 [▶]
+  #instances: array:3 [▶]
+  #aliases: array:59 [▼
+    "Illuminate\Foundation\Application" => "app"
+    "Illuminate\Contracts\Container\Container" => "app"
+    "Illuminate\Contracts\Foundation\Application" => "app"
+    "Illuminate\Auth\AuthManager" => "auth"
+    "Illuminate\Auth\Guard" => "auth.driver"
+    "Illuminate\Contracts\Auth\Guard" => "auth.driver"
+    "Illuminate\Auth\Passwords\TokenRepositoryInterface" => "auth.password.tokens"
+    "Illuminate\View\Compilers\BladeCompiler" => "blade.compiler"
+    "Illuminate\Cache\CacheManager" => "cache"
+    "Illuminate\Contracts\Cache\Factory" => "cache"
+    "Illuminate\Cache\Repository" => "cache.store"
+    "Illuminate\Contracts\Cache\Repository" => "cache.store"
+    "Illuminate\Config\Repository" => "config"
+    "Illuminate\Contracts\Config\Repository" => "config"
+    "Illuminate\Cookie\CookieJar" => "cookie"
+    "Illuminate\Contracts\Cookie\Factory" => "cookie"
+    "Illuminate\Contracts\Cookie\QueueingFactory" => "cookie"
+    "Illuminate\Encryption\Encrypter" => "encrypter"
+    "Illuminate\Contracts\Encryption\Encrypter" => "encrypter"
+    "Illuminate\Database\DatabaseManager" => "db"
+    "Illuminate\Database\Connection" => "db.connection"
+    "Illuminate\Database\ConnectionInterface" => "db.connection"
+    "Illuminate\Events\Dispatcher" => "events"
+    "Illuminate\Contracts\Events\Dispatcher" => "events"
+    "Illuminate\Filesystem\Filesystem" => "files"
+    "Illuminate\Filesystem\FilesystemManager" => "filesystem"
+    "Illuminate\Contracts\Filesystem\Factory" => "filesystem"
+    "Illuminate\Contracts\Filesystem\Filesystem" => "filesystem.disk"
+    "Illuminate\Contracts\Filesystem\Cloud" => "filesystem.cloud"
+    "Illuminate\Contracts\Hashing\Hasher" => "hash"
+    "Illuminate\Translation\Translator" => "translator"
+    "Symfony\Component\Translation\TranslatorInterface" => "translator"
+    "Illuminate\Log\Writer" => "log"
+    "Illuminate\Contracts\Logging\Log" => "log"
+    "Psr\Log\LoggerInterface" => "log"
+    "Illuminate\Mail\Mailer" => "mailer"
+    "Illuminate\Contracts\Mail\Mailer" => "mailer"
+    "Illuminate\Contracts\Mail\MailQueue" => "mailer"
+    "Illuminate\Auth\Passwords\PasswordBroker" => "auth.password"
+    "Illuminate\Contracts\Auth\PasswordBroker" => "auth.password"
+    "Illuminate\Queue\QueueManager" => "queue"
+    "Illuminate\Contracts\Queue\Factory" => "queue"
+    "Illuminate\Contracts\Queue\Monitor" => "queue"
+    "Illuminate\Contracts\Queue\Queue" => "queue.connection"
+    "Illuminate\Routing\Redirector" => "redirect"
+    "Illuminate\Redis\Database" => "redis"
+    "Illuminate\Contracts\Redis\Database" => "redis"
+    "Illuminate\Http\Request" => "request"
+    "Illuminate\Routing\Router" => "router"
+    "Illuminate\Contracts\Routing\Registrar" => "router"
+    "Illuminate\Session\SessionManager" => "session"
+    "Illuminate\Session\Store" => "session.store"
+    "Symfony\Component\HttpFoundation\Session\SessionInterface" => "session.store"
+    "Illuminate\Routing\UrlGenerator" => "url"
+    "Illuminate\Contracts\Routing\UrlGenerator" => "url"
+    "Illuminate\Validation\Factory" => "validator"
+    "Illuminate\Contracts\Validation\Factory" => "validator"
+    "Illuminate\View\Factory" => "view"
+    "Illuminate\Contracts\View\Factory" => "view"
+  ]
+1.4 设置根路径
+
+  #instances: array:10 [▼
+    "app" => Application {#2}
+    "Illuminate\Container\Container" => Application {#2}
+    "events" => Dispatcher {#5 ▶}
+    "path" => "D:\www\laravel5.1\app"
+    "path.base" => "D:\www\laravel5.1"
+    "path.config" => "D:\www\laravel5.1\config"
+    "path.database" => "D:\www\laravel5.1\database"
+    "path.lang" => "D:\www\laravel5.1\resources\lang"
+    "path.public" => "D:\www\laravel5.1\public"
+    "path.storage" => "D:\www\laravel5.1\storage"
+  ]
+2、注册共享的Kernel和异常处理器
+
+$app->singleton(
+    Illuminate\Contracts\Http\Kernel::class,
+    App\Http\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
+);
+上述代码将绑定关系添加到bindings属性里，里面的::class 是php新增的静态属性
+
+  #bindings: array:10 [▼
+    "events" => array:2 [▶]
+    "router" => array:2 [▶]
+    "url" => array:2 [▶]
+    "redirect" => array:2 [▶]
+    "Psr\Http\Message\ServerRequestInterface" => array:2 [▶]
+    "Psr\Http\Message\ResponseInterface" => array:2 [▶]
+    "Illuminate\Contracts\Routing\ResponseFactory" => array:2 [▶]
+    "Illuminate\Contracts\Http\Kernel" => array:2 [▶]
+    "Illuminate\Contracts\Console\Kernel" => array:2 [▶]
+    "Illuminate\Contracts\Debug\ExceptionHandler" => array:2 [▶]
+  ]
+3、处理请求和响应 
+这时我们获取$app后返回index.php页面，然后执行
+
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+1
+这里要注意，make方法调用的是子类Illuminate\Foundation\Application.php里的方法，然后在调用父类Illuminate\Container\Container.php的make方法
+
+接着是make方法里的
+
+// 这里返回bindings数组里的数据，因为我们在获取$app的时候已经把
+// "Illuminate\Contracts\Http\Kernel"绑定了
+$concrete = $this->getConcrete($abstract);
+接着我们调用$object = $this->build($concrete, $parameters); 
+这build方法中
+
+        if ($concrete instanceof Closure) {
+            return $concrete($this, $parameters);
+        }
+因为$concrete是闭包，所以直接返回，这里调用的是我们绑定在app里的闭包也就是，
+
+“Illuminate\Contracts\Http\Kernel” => array:2 [▼ 
+“concrete” => Closure {#23 ▼ 
+class: “Illuminate\Container\Container” 
+this: Application {#2} 
+parameters: array:2 [▶] 
+use: array:2 [▼ 
+“$abstract” => “Illuminate\Contracts\Http\Kernel” 
+“$concrete” => “App\Http\Kernel” 
+] 
+file: “D:\www\laravel5.1\vendor\laravel\framework\src\Illuminate\Container\Container.php” 
+line: “222 to 226” 
+} 
+“shared” => true 
+]
+执行这个方法concrete(this, $parameters)的时候也就是调用Illuminate\Container\Container.php第222到226行之间的代码，传递的参数就是上述use中黑色斜线部分标注的，
+
+function ($c, $parameters = []) use ($abstract, $concrete) {
+            // 根据上述use中的参数，这里赋值应该是make
+            $method = ($abstract == $concrete) ? 'build' : 'make';
+    // 然后在调用application.php中的make方法，$concrete对应的就是App\Http\Kernel
+            return $c->$method($concrete, $parameters);
+        }
+最终是调用构造函数设置app/router，初始化$router中middleware数值（定义在D:\www\laravel5.1\app\Http\Kernel.php文件中，这里我们可以添加任何自定义中间件）实例化App\Http\Kernel
+
+Kernel {#24 ▼
+  #middleware: array:6 [▼
+    0 => "Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode"
+    1 => "App\Http\Middleware\EncryptCookies"
+    2 => "Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse"
+    3 => "Illuminate\Session\Middleware\StartSession"
+    4 => "Illuminate\View\Middleware\ShareErrorsFromSession"
+    5 => "App\Http\Middleware\VerifyCsrfToken"
+  ]
+  #routeMiddleware: array:4 [▼
+    "auth" => "App\Http\Middleware\Authenticate"
+    "auth.basic" => "Illuminate\Auth\Middleware\AuthenticateWithBasicAuth"
+    "guest" => "App\Http\Middleware\RedirectIfAuthenticated"
+    "test" => "App\Http\Middleware\TestMiddleware"
+  ]
+  #app: Application {#2 ▶}
+  #router: Router {#88 ▶}
+  #bootstrappers: array:7 [▶]
+}
+接下来是处理web请求的核心部分 handle方法
+
+$response = $kernel->handle(
+    // $request是经过Symfony封装的请求对象
+    $request = Illuminate\Http\Request::capture()
+);
+调用bootstrap方法，启动一系列启动类的bootstrap(定义在\Illuminate\Foundation\Http\Kernel.php中)方法：
+
+protected $bootstrappers = [
+        // 该类用来读取.env定义的变量 环境配置（$app[‘env’]）
+        'Illuminate\Foundation\Bootstrap\DetectEnvironment',
+        // 扫描config文件下的所有.php结尾的配置文件 基本配置（$app[‘config’]）
+        'Illuminate\Foundation\Bootstrap\LoadConfiguration',
+        // 日志文件（$app[‘log’]）
+        'Illuminate\Foundation\Bootstrap\ConfigureLogging',
+        // 错误&异常处理
+        'Illuminate\Foundation\Bootstrap\HandleExceptions',
+        //清除已解析的Facade并重新启动，注册config文件中alias定义的所有Facade类到容器 (定义在配置文件app.php中的aliases数组)
+       'Illuminate\Foundation\Bootstrap\RegisterFacades',
+       //注册config中providers定义的所有Providers类到容器 (定义在配置文件app.php中的providers数组)
+        'Illuminate\Foundation\Bootstrap\RegisterProviders',
+        //调用所有已注册Providers的boot方法
+        'Illuminate\Foundation\Bootstrap\BootProviders',
+    ];
+通过Pipeline发送请求，经过中间件，再由路由转发，最终返回响应
+
+new Pipeline($this->app))
+        ->send($request)
+        ->through($this->middleware)
+        ->then($this->dispatchToRouter()
+将响应信息发送到浏览器：
+
+$response->send();
+处理继承自TerminableMiddleware接口的中间件（Session）并结束应用生命周期：
+
+$kernel->terminate($request, $response);
+=================================================================================================================================
+
+===============================
+laravel 框架启动详解
+===============================
+1.入口文件
+public/index.php
+-------------------------------
+1.1 注册自动加载项
+1.2 打开(Turn On The Lights)应用
+1.3 运行应用
+-------------------------------
+代码分析
+1.3 运行应用
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+
+$response->send();
+
+$kernel->terminate($request, $response);
+===============================
+
+===============================
+1.1注册自动加载项
+bootstrap/autoload.php
+-------------------------------
+1.1.1 定义常量LARAVEL_START Unix时间戳和微秒数
+1.1.2 注册Composer自动加载文件
+1.1.3 如果启用类映射优化，注册映射文件
+-------------------------------
+代码分析
+===============================
+
+===============================
+1.2 打开(Turn On The Lights)应用
+bootstrap/app.php
+-------------------------------
+1.2.1 实例化Illuminate\Foundation\Application
+1.2.2 为引用绑定重要接口
+1.2.3 返回实例对象
+-------------------------------
+代码分析
+1.2.1 实例化Illuminate\Foundation\Application
+$app = new Illuminate\Foundation\Application(
+    realpath(__DIR__.'/../')
+);
+//传入参数 项目根目录下bootstrap目录
+//laravel/bootstrap
+1.2.2 为引用绑定重要接口
+$app->singleton(
+    Illuminate\Contracts\Http\Kernel::class,
+    App\Http\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
+);
+
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
+);
+1.2.3 返回实例对象
+return $app;
+===============================
+
+===============================
+1.2.1 实例化Illuminate\Foundation\Application
+Illuminate\Foundation\Application.php
+-------------------------------
+命名空间
+namespace Illuminate\Foundation;
+引用
+use Closure;
+use RuntimeException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Container\Container;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Events\EventServiceProvider;
+use Illuminate\Routing\RoutingServiceProvider;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+继承
+Container
+接口
+ApplicationContract, HttpKernelInterface
+-------------------------------
+属性
+-------------------------------
+//laravel 版本号常量
+const VERSION = '5.2.45';
+//laravel 安装基本目录
+protected $basePath;
+//记录 laravel 是否 
+protected $hasBeenBootstrapped = false;
+//记录 laravel 是否 
+protected $booted = false;
+//过程中回调函数数组
+protected $bootingCallbacks = [];
+//完成后回调函数数组
+protected $bootedCallbacks = [];
+//结束后回调函数数组
+protected $terminatingCallbacks = [];
+//所有已经注册的服务提供者
+protected $serviceProviders = [];
+//所有已经加载的服务提供者
+protected $loadedProviders = [];
+//所有延迟加载的服务提供者
+//(不是每次请求都会被加载,只有真的用到它们的时候才会加载)
+protected $deferredServices = [];
+//用于配置Monolog的回调函数
+protected $monologConfigurator;
+//服务提供商定义的数据库路径
+protected $databasePath;
+//服务提供商定义的存储路径
+protected $storagePath;
+//服务提供商定义的环境路径
+protected $environmentPath;
+//启动过程中所需的环境配置文件
+protected $environmentFile = '.env';
+//应用命名空间
+protected $namespace = null;
+-------------------------------
+构造方法
+-------------------------------
+public function __construct($basePath = null)
+{
+	//为容器注册基本绑定
+    $this->registerBaseBindings();
+
+	//注册所有基础服务提供商
+    $this->registerBaseServiceProviders();
+
+	//注册核心类的别名到容器
+    $this->registerCoreContainerAliases();
+
+    //设置 laravel 安装基本目录
+    if ($basePath) {
+        $this->setBasePath($basePath);
+    }
+}
+-------------------------------
+方法
+-------------------------------
+version()
+//返回应用版本号
+*******************************
+registerBaseBindings()
+//为容器注册基本绑定
+*******************************
+//注册所有基础服务提供商
+registerBaseServiceProviders()
+*******************************
+bootstrapWith(array $bootstrappers)
+*******************************
+afterLoadingEnvironment(Closure $callback)
+*******************************
+beforeBootstrapping($bootstrapper, Closure $callback)
+*******************************
+afterBootstrapping($bootstrapper, Closure $callback)
+*******************************
+hasBeenBootstrapped()
+*******************************
+setBasePath($basePath)
+*******************************
+bindPathsInContainer()
+*******************************
+path()
+*******************************
+basePath()
+*******************************
+bootstrapPath()
+*******************************
+configPath()
+*******************************
+databasePath()
+*******************************
+useDatabasePath($path)
+*******************************
+langPath()
+*******************************
+publicPath()
+*******************************
+storagePath()
+*******************************
+useStoragePath($path)
+*******************************
+environmentPath()
+*******************************
+useEnvironmentPath($path)
+*******************************
+loadEnvironmentFrom($file)
+*******************************
+environmentFile()
+*******************************
+environmentFilePath()
+*******************************
+environment()
+*******************************
+isLocal()
+*******************************
+detectEnvironment(Closure $callback)
+*******************************
+runningInConsole()
+*******************************
+runningUnitTests()
+*******************************
+registerConfiguredProviders()
+*******************************
+register($provider, $options = [], $force = false)
+*******************************
+getProvider($provider)
+*******************************
+resolveProviderClass($provider)
+*******************************
+markAsRegistered($provider)
+*******************************
+loadDeferredProviders()
+*******************************
+loadDeferredProvider($service)
+*******************************
+registerDeferredProvider($provider, $service = null)
+*******************************
+make($abstract, array $parameters = [])
+*******************************
+bound($abstract)
+*******************************
+isBooted()
+*******************************
+boot()
+*******************************
+bootProvider(ServiceProvider $provider)
+*******************************
+booting($callback)
+*******************************
+booted($callback)
+*******************************
+fireAppCallbacks(array $callbacks)
+*******************************
+handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
+*******************************
+shouldSkipMiddleware()
+*******************************
+configurationIsCached()
+*******************************
+getCachedConfigPath()
+*******************************
+routesAreCached()
+*******************************
+getCachedRoutesPath()
+*******************************
+getCachedCompilePath()
+*******************************
+getCachedServicesPath()
+*******************************
+isDownForMaintenance()
+*******************************
+abort($code, $message = '', array $headers = [])
+*******************************
+terminating(Closure $callback)
+*******************************
+terminate()
+*******************************
+getLoadedProviders()
+*******************************
+getDeferredServices()
+*******************************
+setDeferredServices(array $services)
+*******************************
+addDeferredServices(array $services)
+*******************************
+isDeferredService($service)
+*******************************
+configureMonologUsing(callable $callback)
+*******************************
+hasMonologConfigurator()
+*******************************
+getMonologConfigurator()
+*******************************
+getLocale()
+*******************************
+setLocale($locale)
+*******************************
+isLocale($locale)
+*******************************
+registerCoreContainerAliases()
+*******************************
+flush()
+*******************************
+getNamespace()
+===============================
+
+
+===============================
+Container 
+Illuminate\Container\Container.php
+-------------------------------
+命名空间
+namespace Illuminate\Container;
+引用
+use Closure;
+use ArrayAccess;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionFunction;
+use ReflectionParameter;
+use InvalidArgumentException;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Container\Container as ContainerContract;
+继承
+接口
+ArrayAccess, ContainerContract
+-------------------------------
+属性
+-------------------------------
+//当前全局可用容器
+protected static $instance;
+//已经解析的容器
+protected $resolved = [];
+//容器绑定
+protected $bindings = [];
+//容器共享实例
+protected $instances = [];
+//已注册类别别名
+protected $aliases = [];
+//所有一注册标签
+protected $extenders = [];
+protected $tags = [];
+protected $buildStack = [];
+public $contextual = [];
+protected $reboundCallbacks = [];
+protected $globalResolvingCallbacks = [];
+protected $globalAfterResolvingCallbacks = [];
+protected $resolvingCallbacks = [];
+protected $afterResolvingCallbacks = [];
+-------------------------------
+构造方法
+-------------------------------
+public function __construct($basePath = null)
+{
+	//为容器注册基本绑定
+    $this->registerBaseBindings();
+
+	//注册所有基础服务提供商
+    $this->registerBaseServiceProviders();
+
+	//注册核心类的别名到容器
+    $this->registerCoreContainerAliases();
+
+    //设置 laravel 安装基本目录
+    if ($basePath) {
+        $this->setBasePath($basePath);
+    }
+}
+-------------------------------
+方法
+-------------------------------
+===============================
+

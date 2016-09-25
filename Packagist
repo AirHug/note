@@ -1,0 +1,243 @@
+---------------------------------
+Composer 的主要资源库
+---------------------------------
+
+---------------------------------
+Listing package names
+---------------------------------
+GET https://packagist.org/packages/list.json
+
+return
+{
+  "packageNames": [
+    "[vendor]/[package]",
+    ...
+  ]
+}
+---------------------------------
+
+---------------------------------
+List packages by organization
+---------------------------------
+GET https://packagist.org/packages/list.json?vendor=[vendor]
+GET https://packagist.org/packages/list.json?vendor=laravel
+
+return
+{
+	packageNames: [
+		"laravel/cashier",
+		"laravel/cashier-braintree",
+		"laravel/database",
+		"laravel/dbfactory",
+		"laravel/elixir",
+		"laravel/envoy",
+		"laravel/form-manager",
+		"laravel/framework",
+		"laravel/gettext",
+		"laravel/homestead",
+		"laravel/installer",
+		"laravel/laravel",
+		"laravel/legacy-encrypter",
+		"laravel/liferaft",
+		"laravel/lumen",
+		"laravel/lumen-framework",
+		"laravel/lumen-installer",
+		"laravel/meta",
+		"laravel/packer",
+		"laravel/passport",
+		"laravel/processor",
+		"laravel/scout",
+		"laravel/simple-route",
+		"laravel/socialite",
+		"laravel/spark-installer",
+		"laravel/valet"
+	]
+}
+---------------------------------
+
+---------------------------------
+List packages by type
+---------------------------------
+GET https://packagist.org/packages/list.json?type=[type]
+GET https://packagist.org/packages/list.json?type=project
+
+return
+{
+	packageNames: [
+		"1000hz/bootstrap-validator",
+		"10mado/madowaku",
+		"1stel/stratostack-portal",
+		"1stel/stratostack-records-generation",
+		"3ev/wordpress-starter",
+		"43081j/php-negotiator"
+	]
+}
+---------------------------------
+
+---------------------------------
+Searching for packages
+---------------------------------
+GET https://packagist.org/search.json?q=[query]
+GET https://packagist.org/search.json?q=monolog
+
+return
+{
+	results: [
+		{
+			name: "monolog/monolog",
+			description: "Sends your logs to files, sockets, inboxes, databases and various web services",
+			url: "https://packagist.org/packages/monolog/monolog",
+			repository: "https://github.com/Seldaek/monolog",
+			downloads: 36999586,
+			favers: 5451
+		},
+		...
+	],
+	total: 308,
+	next: "https://packagist.org/search.json?q=monolog&page=2"
+}
+---------------------------------
+
+---------------------------------
+Search packages by tag
+---------------------------------
+GET https://packagist.org/search.json?tags=[tag]
+GET https://packagist.org/search.json?tags=psr-4
+
+return
+{
+	results: [
+		{
+			name: "sllh/php-cs-fixer-styleci-bridge",
+			description: "Auto configure PHP-CS-Fixer from StyleCI config file",
+			url: "https://packagist.org/packages/sllh/php-cs-fixer-styleci-bridge",
+			repository: "https://github.com/Soullivaneuh/php-cs-fixer-styleci-bridge",
+			downloads: 15145,
+			favers: 23
+		},
+		...
+	],
+	total: 65,
+	next: "https://packagist.org/search.json?page=2&tags%5B0%5D=psr-4"
+}
+---------------------------------
+
+---------------------------------
+Search packages by type
+---------------------------------
+GET https://packagist.org/search.json?q=[query]&type=symfony-bundle
+https://packagist.org/search.json?q=monolog&type=symfony-bundle
+
+return
+{
+	results: [
+		{
+			name: "symfony/monolog-bundle",
+			description: "Symfony MonologBundle",
+			url: "https://packagist.org/packages/symfony/monolog-bundle",
+			repository: "https://github.com/symfony/monolog-bundle",
+			downloads: 12956892,
+			favers: 69
+		},
+		...
+	],
+	total: 23,
+	next: "https://packagist.org/search.json?q=monolog&page=2&type=symfony-bundle"
+}
+---------------------------------
+
+---------------------------------
+Search packages by type
+---------------------------------
+GET https://packagist.org/p/[vendor]/[package].json
+https://packagist.org/p/monolog/monolog.json
+
+return
+{
+  "packages": {
+    "[vendor]/[package]": {
+      "[version1]": {
+        "name": "[vendor]/[package],
+        "description": [description],
+        // ...
+      },
+      "[version2]": {
+        // ...
+      }
+      // ...
+    }
+  }
+}
+---------------------------------
+
+---------------------------------
+Using the API
+---------------------------------
+GET https://packagist.org/packages/[vendor]/[package].json
+https://packagist.org/packages/monolog/monolog.json
+
+return
+{
+  "packages": {
+    "[vendor]/[package]": {
+      "[version1]": {
+        "name": "[vendor]/[package],
+        "description": [description],
+        // ...
+      },
+      "[version2]": {
+        // ...
+      }
+      // ...
+    }
+  }
+}
+---------------------------------
+
+---------------------------------
+创建我的package
+---------------------------------
+$ composer init
+
+ Welcome to the Composer config generator
+
+ This command will guide you through creating your composer.json config.
+
+ Package name (<vendor>/<name>) [zzh/test]: airhug/package
+ Description []: airhug's first package
+ Author [, n to skip]: Air Hug <zhangzhonghui635@gmail.com>
+ Minimum Stability []: dev
+ Package Type (e.g. library, project, metapackage, composer-plugin) []: library
+ License []: MIT
+ Define your dependencies.
+ Would you like to define your dependencies (require) interactively [yes]? no
+ Would you like to define your dev dependencies (require-dev) interactively [yes]? no
+
+{
+    "name": "airhug/package",
+    "description": "airhug's first package",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Air Hug",
+            "email": "zhangzhonghui635@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
+
+Do you confirm generation [yes]? yes
+
+补充
+"autoload": {
+    "psr-4": {
+        "LaravelDwz\\": "src/"
+    }
+}
+
+上传到github
+访问https://packagist.org/packages/submit
+提交
+---------------------------------

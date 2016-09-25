@@ -1,0 +1,139 @@
+===================================
+			常用设计模式
+===================================
+1 创建型
+
+抽象工厂模式（Abstract Factory）
+建造者模式（Builder）
+工厂方法模式（Factory Method）
+多例模式（Multiton）
+对象池模式（Pool）
+原型模式（Prototype）
+简单工厂模式（Simple Factory）
+单例模式（Singleton）
+静态工厂模式（Static Factory）
+-----------------------------------
+2 结构型
+
+适配器模式（Adapter）
+桥梁模式（Bridge）
+组合模式（Composite）
+数据映射模式（Data Mapper）
+装饰模式（Decorator）
+依赖注入模式（Dependency Injection）
+门面模式（Facade）
+流接口模式（Fluent Interface）
+代理模式（Proxy）
+注册模式（Registry）
+-----------------------------------
+3 行为型
+
+责任链模式（Chain Of Responsibilities）
+命令行模式（Command）
+迭代器模式（Iterator）
+中介者模式（Mediator）
+备忘录模式（Memento）
+空对象模式（Null Object）
+观察者模式（Observer）
+规格模式（Specification）
+状态模式（State）
+策略模式（Strategy）
+模板方法模式（Template Method）
+访问者模式（Visitor）
+-----------------------------------
+4 其它
+
+委托模式（Delegation）
+服务定位器模式（Service Locator）
+资源库模式（Repository）
+===================================
+
+===================================
+  抽象工厂模式（Abstract Factory）
+===================================
+概述：
+抽象工厂模式为一组相关或相互依赖的对
+象创建提供接口，而无需指定其具体实现类。
+抽象工厂的客户端不关心如何创建这些对象，
+只关心如何将它们组合到一起。
+-----------------------------------
+		abstract AbstractFactory
+		  →abstract createText()
+		 →abstract createPicture()
+			       ┊
+			     extends
+		┌----------┷----------┐
+   JsonFactory			  HtmlFactory
+   →createText()		 →createText()
+ →createPicture()		→createPicture()
+-----------------------------------
+使用:
+public function create(AbstractFactory $factory)
+{
+    return [
+        $factory->createText('标题'),
+        $factory->createPicture('/image.jpg', '图片'),
+        $factory->createText('内容')
+    ];
+}
+-----------------------------------
+要求输入参数为 abstract AbstractFactory
+实际输入参数为 JsonFactory or HtmlFactory
+不管输入参数为什么直接执行方法达到目的
+createText() and createPicture()
+
+我的总结：根据环境执行方法
+使用场景：不同数据库使用不同语法类创建SQL语句
+扩展方法：增加一个 AbstractFactory 继承类
+===================================
+
+===================================
+	   建造者模式（Builder）
+===================================
+概述：
+建造者模式将一个复杂的对象的构建与它
+的表示分离，使得同样的构建过程可以创
+建不同的表示。
+-----------------------------------
+	          class Director
+	build(BuilderInterface $builder)
+
+		interface BuilderInterface
+		    →createVehicle()
+			  →addWheel()
+			  →addEngine()
+			  →addDoors()
+			 →getVehicle()
+			       ┊
+			   implements
+		┌----------┷----------┐
+   BikeBuilder			  CarBuilder
+   →Bike $bike             →Car $car
+→createVehicle()		→createVehicle()
+  →addWheel()		      →addWheel()
+  →addEngine()		      →addEngine()
+  →addDoors()		      →addDoors()
+ →getVehicle()		     →getVehicle()
+
+		    abstract Vehicle
+		      →Array $data
+		       →setPart()
+			       ┊
+			     extends
+		┌----------┷----------┐
+       Bike			          Car
+-----------------------------------
+使用:
+$director=new Director->build(BuilderInterface $builder)
+-----------------------------------
+要求输入参数为 interface BuilderInterface
+实际输入参数为 BikeBuilder or CarBuilder
+不管输入参数为什么直接执行方法达到目的
+Bike and Car
+
+我的总结：根据目的创建对象
+使用场景：根据不同参数返回对应模型
+扩展方法：
+增加一个 Vehicle 继承类
+增加一个 BuilderInterface 接口实现类
+===================================
