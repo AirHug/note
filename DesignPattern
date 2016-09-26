@@ -48,6 +48,13 @@
 资源库模式（Repository）
 ===================================
 
+================================================
+================================================
+				    创建型
+================================================
+================================================
+
+
 ===================================
   抽象工厂模式（Abstract Factory）
 ===================================
@@ -64,7 +71,7 @@
 			     extends
 		┌----------┷----------┐
    JsonFactory			  HtmlFactory
-   →createText()		 →createText()
+  →createText()		     →createText()
  →createPicture()		→createPicture()
 -----------------------------------
 使用:
@@ -95,7 +102,7 @@ createText() and createPicture()
 的表示分离，使得同样的构建过程可以创
 建不同的表示。
 -----------------------------------
-	          class Director
+	        class Director
 	build(BuilderInterface $builder)
 
 		interface BuilderInterface
@@ -136,4 +143,410 @@ Bike and Car
 扩展方法：
 增加一个 Vehicle 继承类
 增加一个 BuilderInterface 接口实现类
+===================================
+
+===================================
+   工厂方法模式（Factory Method）
+===================================
+概述：
+定义一个创建对象的接口，
+但是让子类去实例化具体类。
+工厂方法模式让类的实例化延迟到子类中。
+-----------------------------------
+			 abstract FactoryMethod
+		    →abstract createVehicle()
+				  →create($type)
+				       ┊
+				     extends 
+			┌----------┷----------┐
+	  ItalianFactory 		 GermanFactory 
+	 →createVehicle()    	→createVehicle()
+
+		   interface VehicleInterface
+			       →setColor()
+				       ┊
+				   implements 
+	    ┌--------------╂--------------┐
+	 Porsche         Bicycle 		Ferrari
+	 →$color         →$color        →$color
+	→setColor()	   →setColor()	   →setColor()
+  →addTuningAMG()
+-----------------------------------
+使用:
+$vehicle=new ItalianFactory->createVehicle($type)
+$vehicle=new GermanFactory->createVehicle($type)
+-----------------------------------
+要求输入参数为 $type 
+给具体继承类 ItalianFactory or GermanFactory
+继承类执行父类 FactoryMethod create() 方法构建对象
+具体构建逻辑在继承类 ItalianFactory or GermanFactory
+中的 createVehicle() 方法体中
+
+我的总结：根据参数返回普通模型或者特殊模型
+使用场景：
+SQL语句查询返回不同数据结构的模型对象或者模型组
+扩展方法：
+增加一个 FactoryMethod 继承类
+增加一个 VehicleInterface 接口实现类 
+但是共享一个所有 FactoryMethod 
+都共享一个特殊的 VehicleInterface 接口实现类
+===================================
+
+===================================
+        多例模式（Multiton）
+===================================
+概述：
+多例模式和单例模式类似，但可以返回多个实例。
+比如我们有多个数据库连接，
+MySQL、SQLite、Postgres，
+又或者我们有多个日志记录器，
+分别用于记录调试信息和错误信息，
+这些都可以使用多例模式实现。
+-----------------------------------
+class Multiton
+{
+    /**
+     * 实例数组
+     *
+     * @var array
+     */
+	private static $instances = array();
+
+    /**
+     * 构造函数是私有的，不能从外部进行实例化
+     *
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * 通过指定名称返回实例（使用到该实例的时候才会实例化）
+     *
+     * @param string $instanceName
+     *
+     * @return Multiton
+     */
+    public static function getInstance($instanceName)
+    {
+        if (!array_key_exists($instanceName, self::$instances)) {
+            self::$instances[$instanceName] = new self();
+        }
+
+        return self::$instances[$instanceName];
+    }
+
+    /**
+     * 防止实例从外部被克隆
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * 防止实例从外部反序列化
+     *
+     * @return void
+     */
+    private function __wakeup()
+    {
+    }
+}
+-----------------------------------
+使用:
+静态调用
+-----------------------------------
+静态调用 getInstance() 方法
+返回多个实例
+
+我的总结：根据实例名或数组返回一组实例
+使用场景：一次性获取多个模型
+扩展方法：
+===================================
+
+===================================
+        对象池模式（Pool）
+===================================
+概述：
+对象池是一组已经初始化过且可以直接
+使用的对象集合，用户在使用对象时可
+以从对象池中获取对象，对其进行操作
+处理，并在不需要时归还给对象池而非
+销毁它。
+-----------------------------------
+class Pool
+private $instances
+private $class
+__construct($class)
+get()
+dispose($instance)
+
+class Processor
+private $pool
+private $processing
+private $maxProcesses
+private $waitingQueue
+__construct(Pool $pool)
+process($image)
+createWorker($image)
+processDone($worker)
+pushToWaitingQueue($image)
+popFromWaitingQueue()
+
+class Worker
+__construct()
+run($image, array $callback)
+-----------------------------------
+使用:
+实例池 Pool dispose() 增加池中实例
+执行实例进程 process()
+等待队列 $waitingQueue
+-----------------------------------
+dispose() 增加池中实例
+process() 执行实例
+
+我的总结：
+创建对象放入对象池，重复利用这一对象做操作
+使用场景：
+创建一次数据库连接对象或 Socket 对象，重复使用
+扩展方法：
+dispose() 增加池中实例
+===================================
+
+===================================
+       原型模式（Prototype）
+===================================
+概述：
+通过创建原型使用克隆方法实现对象创
+建而不是使用标准的 new 方式。
+-----------------------------------
+			  abstract BookPrototype
+			   →protected $category
+			    →public getTitle()
+			    →public setTitle()
+			   →abstract __clone()
+				       ┊
+				     extends
+			┌----------┷----------┐
+	BarBookPrototype 		FooBookPrototype 
+   →protected $category    →protected $category
+    →public __clone()       →public __clone()    
+-----------------------------------
+使用:
+-----------------------------------
+结合以上模型，可能在执行过程的不同获得的产物也不同
+使用这个模型下的clone，可以方便的获取副本
+
+我的总结：赋予工厂动态副本的能力
+使用场景：
+执行某段处理之前，克隆这个对象此时状态的副本
+不管此时对象实那个类的实例对象
+扩展方法：
+===================================
+
+===================================
+   简单工厂模式（Simple Factory）
+===================================
+概述：
+简单工厂的作用是实例化对象，而不需要
+客户了解这个对象属于哪个具体的子类。
+简单工厂实例化的类具有相同的接口或者
+基类，在子类比较固定并不需要扩展时，
+可以使用简单工厂。
+-----------------------------------
+				 class ConcreteFactory
+			 	  →protected $typeList
+			 	 →public __construct()
+			  →public createVehicle($type)
+
+			    interface VehicleInterface
+			    →public driveTo($destination)
+					        ┊
+					    implements 
+			┌---------------┷---------------┐
+	     Scooter  		                  Bicycle 
+→public driveTo($destination)  →public driveTo($destination)   
+-----------------------------------
+使用:
+-----------------------------------
+根据类型创建实例
+
+我的总结：根据类型创建实例
+使用场景：
+采用简单工厂的优点是可以使用户根据
+参数获得对应的类实例，避免了直接实
+例化类，降低了耦合性
+扩展方法：
+增加简单工厂 $typeList
+===================================
+
+===================================
+       单例模式（Singleton）
+===================================
+概述：
+单例模式的作用就是保证在整个应用程序
+的生命周期中，任何一个时刻，单例类的
+实例都只存在一个，同时这个类还必须提
+供一个访问该类的全局访问点。
+-----------------------------------
+class Singleton
+{
+    /**
+     * @var Singleton reference to singleton instance
+     */
+    private static $instance;
+    
+    /**
+     * 通过延迟加载（用到时才加载）获取实例
+     *
+     * @return self
+     */
+    public static function getInstance()
+    {
+        if (null === static::$instance) {
+            static::$instance = new static;
+        }
+
+        return static::$instance;
+    }
+
+    /**
+     * 构造函数私有，不允许在外部实例化
+     *
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * 防止对象实例被克隆
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * 防止被反序列化
+     *
+     * @return void
+     */
+    private function __wakeup()
+    {
+    }
+}
+-----------------------------------
+使用:
+静态调用
+-----------------------------------
+静态调用 getInstance() 方法
+返回一个实例
+
+我的总结：根据实例名一个实例
+使用场景：防止一个实例重复创建
+扩展方法：
+===================================
+
+===================================
+   静态工厂模式（Static Factory）
+===================================
+概述：
+与简单工厂类似，不同之处在于静态工厂
+模式使用一个静态方法来创建所有类型的
+对象
+-----------------------------------
+			    class StaticFactory
+		 	     →protected $type
+		       →static factory($type)
+
+		    interface FormatterInterface
+				        ┊
+				    implements 
+		┌---------------┷---------------┐
+  FormatNumber  		            FormatNumber 
+-----------------------------------
+使用:
+-----------------------------------
+静态调用
+
+我的总结：
+区别于简单工厂，静态方法创建实例
+使用场景：
+采用简单工厂的优点是可以使用户根据
+参数获得对应的类实例，避免了直接实
+例化类，降低了耦合性
+扩展方法：
+===================================
+
+================================================
+================================================
+                    结构型
+================================================
+================================================
+
+
+===================================
+   适配器模式（Adapter / Wrapper）
+===================================
+概述：
+适配器模式将一个类的接口转换成客户希
+望的另外一个接口，使得原本由于接口不
+兼容而不能一起工作的那些类可以在一起
+工作。
+-----------------------------------
+
+	        interface PaperBookInterface
+		           →public open()
+		         →public turnPage()
+		    	        ┊
+		    	    implements 
+		┌---------------┷---------------┐
+      Book			                EBookAdapter
+ →public open()		             →protected $eBook
+→public turnPage()  →public __construct(EBookInterface $ebook)
+							      →public open()
+							    →public turnPage()
+
+	         interface EBookInterface
+		        →public pressNext()
+		       →public pressStart()
+		                ┊
+		            implements 
+		                ┊
+		              Kindle 
+		        →public pressNext()
+		       →public pressStart()
+
+-----------------------------------
+使用:
+/**
+ * 电子书将纸质书接口方法转换为电子书对应方法
+ */
+public function open()
+{
+    $this->eBook->pressStart();
+}
+
+/**
+ * 纸质书翻页转化为电子书翻页
+ */
+public function turnPage()
+{
+    $this->eBook->pressNext();
+}
+-----------------------------------
+通过 EBookAdapter 来转化对应方法
+pressStart()---->open()
+pressNext()---->turnPage()
+
+我的总结：
+通过转化使原本不适应的类转化为可适应的类
+使用场景：
+引用其他人写的类到自己项目中，
+提供不适配的解决方案
+扩展方法：
+增加一个 PaperBookInterface 借口实现类
 ===================================
