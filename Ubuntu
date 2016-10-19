@@ -1,0 +1,93 @@
+常用command line
+安装
+$ sudo apt-get install nginx
+
+卸载 
+$ sudo apt-get remove nginx
+
+查找 
+$ whereis nginx
+
+重启nginx
+$ sudo service nginx restart
+
+重启mysql 
+$ sudo /etc/init.d/mysql restart
+
+查看文件目录
+$ ls [参数] [文件/目录]
+-a 表示列出所有的文件，包括以"."开头的隐藏文件
+
+-d 如果其后接的是一个目录，则此只输出目录的名称
+
+-l 表示以清单的形式列出文件的条目，包括文件的名称、权限、拥有者、大小、最后修改时间等
+
+-t 表示列出的条目按最后修改的时间进行排序，默认是使用文件夹的名称来排序
+
+-C 以文件的名称按列纵向排序
+
+-F 在文件名后加一个符号来表示文件类型
+
+显示桌面
+Ctrl+Win+d
+
+删除文件
+rm index.html -r
+
+-------------------------------------------------
+ngnix+php 配置
+-------------------------------------------------
+安装php7.0
+sudo apt install php7.0-fpm
+修改
+/etc/php/7.0/fpm/pool.d
+user=zzh
+group=zzh
+listen.owner = zzh
+listen.group = zzh
+-------------------------------------------------
+安装nginx
+sudo apt-get install nginx
+修改 nginx.conf
+user zzh; 
+修改 site-enabled/default
+例子
+server {
+	listen 80;
+	listen [::]:80;
+
+	root /var/www;//网站目录
+
+	server_name localhost;
+
+	location / {
+		try_files $uri /index.php$is_args$args;
+		index index.php; 
+	}
+
+	location ~ \.php$ {
+		fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+
+		include fastcgi_params;
+		fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+		fastcgi_param   SCRIPT_NAME        $fastcgi_script_name; 
+	}
+
+	location ~ /\.ht {
+		deny all;
+	}
+}
+-------------------------------------------------
+配置修改后的重启命令
+sudo nginx -s reload
+sudo service php7.0-fpm restart
+-------------------------------------------------
+搜索包
+sudo apt search php7.0
+安装包
+sudo apt install php7.0-包名
+-------------------------------------------------
+
+-------------------------------------------------
+搭建laravel in ubuntu
+-------------------------------------------------

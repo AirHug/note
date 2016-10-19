@@ -70,25 +70,28 @@ self指向本类
 ----------------------
 非静态环境下使用 static::
 ----------------------
+<?php 
 class A {
-    private function foo() {
-        echo "success!\n";
+    static $name = "zzh";
+    public static function intro()
+    {
+        echo "my name is " . self::$name;
     }
-    public function test() {
-        $this->foo();
-        static::foo();
+
+    public static function intro1()
+    {
+        echo "my name is " . static::$name;
     }
 }
 
 class B extends A {
-   /* foo()将被拷贝给类B, 所以foo()方法仍然是类A中相同,返回将成功*/
+    static $name = "new zzh";
 }
 
-class C extends A {
-    private function foo() {
-        /* 原方法被替换 */
-    }
-}
+B::intro();//zzh
+echo "<hr/>";
+B::intro1();//new zzh
+ ?>
 ======================
 PHP闭包（Closure）
 匿名函数
@@ -114,7 +117,7 @@ $func();
 //some string
 ----------------------
 //完全引用变量，原来的值会因为闭包里的逻辑改变
-$param='some string'
+$param='some string';
 $func = function() use (&$param) {
     echo $param;
 };
@@ -148,6 +151,27 @@ print_r($a);
 strrev()
 反转字符串
 ======================
+parent::
+它指的就是派生类在 extends 声明中所指的基类的名字
+<?php
+class A {
+    function example() {
+        echo "I am A::example() and provide basic functionality.<br />\n";
+    }
+}
+
+class B extends A {
+    function example() {
+        echo "I am B::example() and provide additional functionality.<br />\n";
+        parent::example();
+    }
+}
+
+$b = new B;
+
+// 这将调用 B::example()，而它会去调用 A::example()。
+$b->example();
+?>
 ======================
 ======================
 ======================

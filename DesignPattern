@@ -506,7 +506,7 @@ class Singleton
 		┌---------------┷---------------┐
       Book			                EBookAdapter
  →public open()		             →protected $eBook
-→public turnPage()  →public __construct(EBookInterface $ebook)
+→public turnPage()    →public __construct(EBookInterface $ebook)
 							      →public open()
 							    →public turnPage()
 

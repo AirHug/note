@@ -1,0 +1,2447 @@
+***********************
+**********安装
+***********************
+http://www.semantic-ui.cn/introduction/getting-started.html
+-----------------------------------------------
+npm install semantic-ui --save
+cd semantic/
+gulp build
+-----------------------------------------------
+***********************
+*    Laravel 安装
+***********************
+-----------------------------------------------
+npm install semantic-ui --save
+
+路径选择../public
+
+cd semantic/
+gulp build
+-----------------------------------------------
+
+=======================================================================================
+***************************************************************************************
+									控件代码笔记
+***************************************************************************************
+=======================================================================================
+***********************
+**********容器
+***********************
+一般容器
+<div class="ui container">
+  <p></p>
+</div>
+-----------------------------------------------
+文本容器
+<div class="ui text container">
+</div>
+-----------------------------------------------
+容器变种
+-----------------------------------------------
+文本对齐
+左
+<div class="ui left aligned container">
+  <p></p>
+</div>
+中
+<div class="ui center aligned container">
+  <p></p>
+</div>
+右
+<div class="ui right aligned container">
+  <p></p>
+</div>
+适应
+<div class="ui justified container">
+  <p></p>
+</div>
+满宽
+<div class="ui fluid container">
+    <p></p>
+</div>
+=======================================================================================
+***********************
+**********按钮
+***********************
+按钮
+<button class="ui button">Follow </button>
+-----------------------------------------------
+强调按钮
+<button class="ui primary button">Save </button>
+<button class="ui secondary button">Okay </button>
+-----------------------------------------------
+动画按钮
+<div class="ui animated button" tabindex="0">
+  <div class="visible content">Next</div>
+  <div class="hidden content">
+    <i class="right arrow icon"></i>
+  </div>
+</div>
+<div class="ui vertical animated button" tabindex="0">
+  <div class="hidden content">Shop</div>
+  <div class="visible content">
+    <i class="shop icon"></i>
+  </div>
+</div>
+<div class="ui animated fade button" tabindex="0">
+  <div class="visible content">Sign-up for a Pro account</div>
+  <div class="hidden content">$12.99 a month </div>
+</div>
+
+visable:默认
+hidden:hover
+animated:指定按钮为动画按钮
+tabindex:键盘Tab键选中按钮button标签自带，div标签按钮需要加这个
+动画效果:
+vertical
+fade
+-----------------------------------------------
+标签按钮
+<div class="ui labeled button" tabindex="0">
+  <div class="ui button"><i class="heart icon"></i> Like </div>
+  <a class="ui basic label">
+    2,048
+  </a>
+</div>
+<div class="ui left labeled button" tabindex="0">
+  <a class="ui basic right pointing label">
+    2,048
+  </a>
+  <div class="ui button"><i class="heart icon"></i> Like </div>
+</div>
+<div class="ui left labeled button" tabindex="0">
+  <a class="ui basic label">
+    1,048
+  </a>
+  <div class="ui icon button">
+    <i class="fork icon"></i>
+  </div>
+</div>
+
+<div class="ui labeled button" tabindex="0">
+    <div class="ui red button"><i class="heart icon"></i> Like </div>
+    <a class="ui basic red left pointing label">
+        1,048
+    </a>
+</div>
+
+ui basic label:标签部分
+left/right pointing:标签小箭头
+labeled:指定按钮为标签按钮
+left labeled:标签在左边，默认在右边
+颜色:
+red
+blue
+pink
+green
+orange
+-----------------------------------------------
+图标按钮
+<button class="ui icon button">
+  <i class="cloud icon"></i>
+</button>
+
+icon:指定按钮为图标按钮
+图标:
+cloud
+-----------------------------------------------
+标签图标按钮
+<button class="ui labeled icon button">
+	<i class="pause icon"></i> Pause 
+</button>
+<button class="ui right labeled icon button">
+	<i class="right arrow icon"></i> Next 
+</button>
+
+labeled icon:指定按钮为标签图标按钮
+-----------------------------------------------
+基本按钮
+<button class="ui primary basic button">
+	<i class="icon user"></i> Add Friend 
+</button>
+
+basic:指定按钮为基本按钮
+强调:
+primary 
+secondary 
+positive 
+negative 
+颜色:
+red 
+orange 
+yellow 
+olive 
+green 
+teal 
+blue 
+violet 
+purple 
+pink 
+brown 
+grey 
+black 
+-----------------------------------------------
+颜色翻转高亮按钮
+<button class="ui inverted red button">Red</button>
+<button class="ui inverted red basic button">Basic Red</button>
+
+inverted:指定按钮为颜色翻转高亮按钮
+basic:指定仅边框变色
+-----------------------------------------------
+按钮组
+<div class="ui buttons">
+  <button class="ui button">One</button>
+  <button class="ui button">Two</button>
+  <button class="ui button">Three</button>
+</div>
+
+ui buttons:指定按钮组
+-----------------------------------------------
+图标按钮组
+<div class="ui icon buttons">
+    <button class="ui button"><i class="bold icon"></i></button>
+    <button class="ui button"><i class="underline icon"></i></button>
+    <button class="ui button"><i class="text width icon"></i></button>
+</div>
+
+icon buttons:图标按钮组
+-----------------------------------------------
+条件按钮
+<div class="ui buttons">
+  <button class="ui button">un</button>
+  <div class="or" data-text="ou"></div>
+  <button class="ui positive button">deux</button>
+</div>
+
+or:条件逻辑
+data-text:指定条件逻辑显示文字
+-----------------------------------------------
+按钮状态
+-----------------------------------------------
+<button class="ui active button"><i class="user icon"></i> Follow </button>
+<button class="ui disabled button"><i class="user icon"></i> Followed </button>
+<button class="ui loading button">Loading</button>
+
+active:激活状态
+disabled:禁用状态
+loading:等待状态
+-----------------------------------------------
+按钮变体
+-----------------------------------------------
+<button class="ui facebook button"><i class="facebook icon"></i> Facebook </button>
+<button class="ui twitter button"><i class="twitter icon"></i> Twitter </button>
+<button class="ui google plus button"><i class="google plus icon"></i> Google Plus </button>
+<button class="ui vk button"><i class="vk icon"></i> VK </button>
+<button class="ui linkedin button"><i class="linkedin icon"></i> LinkedIn </button>
+<button class="ui instagram button"><i class="instagram icon"></i> Instagram </button>
+<button class="ui youtube button"><i class="youtube icon"></i> YouTube </button>
+
+变体属性:
+facebook
+twitter
+google
+vk
+linkedin
+linkedin
+youtube
+-----------------------------------------------
+按钮尺寸
+-----------------------------------------------
+<button class="huge ui button">Huge </button>
+
+尺寸属性:
+mini 
+tiny 
+small 
+medium 
+large 
+big 
+huge 
+massive 
+-----------------------------------------------
+按钮浮动
+<button class="ui right floated button">Right Floated</button>
+<button class="ui left floated button">Left Floated</button>
+
+floated:指定浮动按钮
+浮动方向:
+right
+left
+-----------------------------------------------
+按钮紧凑化
+<button class="compact ui button">Hold </button>
+<button class="ui compact icon button">
+  <i class="pause icon"></i>
+</button>
+<button class="ui compact labeled icon button"><i class="pause icon"></i> Pause </button>
+
+compact:紧凑化按钮
+-----------------------------------------------
+开关按钮
+<button class="ui toggle button">Vote</button>
+
+-----------------------------------------------
+圆按钮
+<button class="circular ui icon button">
+  <i class="icon settings"></i>
+</button>
+
+circular:指定圆按钮
+-----------------------------------------------
+满宽按钮
+<button class="fluid ui button">Fits container</button>
+
+fluid:指定满宽按钮
+-----------------------------------------------
+垂直紧贴按钮
+<div class="ui top attached button" tabindex="0">Top</div>
+<div class="ui attached segment">
+    <p>hello world</p>
+</div>
+<div class="ui bottom attached button" tabindex="0">Bottom</div>
+
+<div class="ui two top attached buttons">
+    <div class="ui button">One</div>
+    <div class="ui button">Two</div>
+</div>
+<div class="ui attached segment">
+    <p>hello world!</p>
+</div>
+<div class="ui two bottom attached buttons">
+    <div class="ui button">One</div>
+    <div class="ui button">Two</div>
+</div>
+
+attached:指定紧贴按钮
+按钮组情况按钮个数:
+two
+three
+four
+紧贴方向:
+top
+bottom
+-----------------------------------------------
+水平紧贴按钮
+<button class="ui left attached button">Left</button>
+<button class="right attached ui button">Right</button>
+
+紧贴方向:
+left
+right
+-----------------------------------------------
+垂直按钮组
+<div class="ui vertical buttons">
+  <button class="ui button">动态</button>
+  <button class="ui button">Messages</button>
+  <button class="ui button">Events</button>
+  <button class="ui button">Photos</button>
+</div>
+
+vertical:指定垂直按钮组
+-----------------------------------------------
+自由组合按钮组
+<div class="ui buttons">
+  <button class="ui labeled icon button"><i class="left chevron icon"></i> Back </button>
+  <button class="ui button"><i class="stop icon"></i> Stop </button>
+  <button class="ui right labeled icon button">Forward <i class="right chevron icon"></i> </button>
+</div>
+=======================================================================================
+***********************
+**********分隔条
+***********************
+基本分隔条
+<div class="ui divider"></div>
+
+ui divider:指定分隔条
+-----------------------------------------------
+=======================================================================================
+***********************
+**********国旗
+***********************
+国旗
+<i class="ae flag"></i>
+<i class="france flag"></i>
+<i class="myanmar flag"></i>
+
+flag:指定国旗图标
+国旗样式:
+http://www.semantic-ui.cn/elements/flag.html
+=======================================================================================
+***********************
+**********标题
+***********************
+普通标题
+<h1 class="ui header">First header</h1>
+<h2 class="ui header">Second header</h2>
+<h3 class="ui header">Third header</h3>
+<h4 class="ui header">Fourth header</h4>
+<h5 class="ui header">Fifth header</h5>
+
+header:指定标题
+-----------------------------------------------
+图标标题
+<h2 class="ui icon header">
+  <i class="settings circular icon"></i>
+  <div class="content">Account Settings <div class="sub header">Manage your account settings and set e-mail preferences.</div>
+  </div>
+</h2>
+
+icon header:图标标题
+circular:指定原先图标标题
+-----------------------------------------------
+子标题
+<h2 class="ui sub header">Price </h2>
+<span>$10.99</span>
+
+ui sub header:指定子标题
+-----------------------------------------------
+图片标题
+<h2 class="ui header">
+    <img class="ui image" src="/logo.png">
+    <div class="content">Learn More </div>
+</h2>
+<h2 class="ui header">
+    <img class="ui circular image" src="/logo.png">
+    <div class="content">Learn More </div>
+</h2>
+
+ui image:图片
+circular:圆形图片
+-----------------------------------------------
+不可用标题
+<div class="ui disabled header">Disabled Header </div>
+
+disabled:指定不可用标题
+-----------------------------------------------
+标题分割线
+<h3 class="ui dividing header">Dividing Header </h3>
+
+dividing:指定分割线
+-----------------------------------------------
+区域块标题
+<h3 class="ui block header">Block Header </h3>
+
+ui block header:指定区域块标题
+-----------------------------------------------
+紧贴标题
+<h3 class="ui top attached header">Top Attached </h3>
+<div class="ui attached segment">
+  <p></p>
+</div>
+<h3 class="ui attached header">Attached </h3>
+<div class="ui attached segment">
+  <p></p>
+</div>
+<h3 class="ui bottom attached header">Bottom Attached </h3>
+
+ui attached header:指定津贴标题
+紧贴位置(默认为文段中紧贴):
+top
+bottom
+-----------------------------------------------
+浮动标题
+<div class="ui clearing segment">
+  <h3 class="ui right floated header">Go Forward </h3>
+  <h3 class="ui left floated header">Go Back </h3>
+</div>
+
+floated:指定浮动标题
+浮动方向:
+right
+right
+-----------------------------------------------
+文本对齐
+<div class="ui segment">
+    <h3 class="ui right aligned header">Right </h3>
+    <h3 class="ui left aligned header">Left </h3>
+    <h3 class="ui justified header">This should take up the full width even if only one line </h3>
+    <h3 class="ui center aligned header">Center </h3>
+</div>
+
+aligned:文本对齐
+对其方向:
+right
+left
+justified
+center
+=======================================================================================
+***********************
+**********图标
+***********************
+图标
+<i class="add to calendar icon"></i>
+
+图标:
+http://www.semantic-ui.cn/elements/icon.html
+=======================================================================================
+***********************
+**********图片
+***********************
+普通图片
+<img class="ui small image" src="/logo.png">
+
+<div class="ui small image">
+  <img src="/images/wireframe/image.png">
+</div>
+
+<div class="ui small image">
+  <svg width="150" height="150">
+    <image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/images/wireframe/image.png" x="0" y="0" width="100%" height="100%"></image>
+  </svg>
+</div>
+
+ui small image:指定图片
+-----------------------------------------------
+图片链接
+<a href="http://google.com" class="ui medium image">
+  <img src="/images/wireframe/image-text.png">
+</a>
+
+hidden:隐藏
+-----------------------------------------------
+隐藏图片
+<img class="hidden ui image" src="/images/wireframe/image.png">
+
+hidden:隐藏
+-----------------------------------------------
+头像图片
+<img class="ui avatar image" src="/images/wireframe/square-image.png">
+<span>Username</span>
+
+avatar:指定头像图片
+-----------------------------------------------
+图片边框
+<img class="ui medium bordered image" src="/logo.png">
+
+bordered:指定边框
+-----------------------------------------------
+全宽图片
+<img class="ui fluid image" src="/images/wireframe/image.png">
+
+bordered:指定全宽
+-----------------------------------------------
+圆角图片
+<img class="ui medium rounded image" src="/logo.png">
+
+rounded:指定圆角图片
+-----------------------------------------------
+圆形图片
+<img class="ui medium circular image" src="/logo.png">
+
+circular:指定圆形图片
+-----------------------------------------------
+图片组纵排
+<img class="ui top aligned tiny image" src="/logo.png">
+<span>Top Aligned</span>
+<div class="ui divider"></div>
+<img class="ui middle aligned tiny image" src="/logo.png">
+<span>Middle Aligned</span>
+<div class="ui divider"></div>
+<img class="ui bottom aligned tiny image" src="/logo.png">
+<span>Bottom Aligned</span>
+
+aligned:指定排列
+排列位置:
+top
+middle
+bottom
+-----------------------------------------------
+图片居中
+<img class="ui centered medium image" src="/images/wireframe/image.png">
+
+centered:图片居中
+-----------------------------------------------
+图片排列文字中
+<img class="ui mini spaced image" src="/images/wireframe/image.png">
+
+spaced:图片排列文字中
+-----------------------------------------------
+图片排列文字中
+<img class="ui mini spaced image" src="/images/wireframe/image.png">
+
+spaced:图片排列文字中
+-----------------------------------------------
+图片浮动
+<img class="ui small left floated image" src="/images/wireframe/text-image.png">
+
+floated:环绕浮动
+-----------------------------------------------
+图片尺寸
+
+Class Name	Size
+mini		35px
+tiny		80px
+small		150px
+medium		300px
+large		450px
+big			600px
+huge		800px
+massive		960px
+-----------------------------------------------
+图片组
+<div class="ui tiny images">
+  <img class="ui image" src="/images/wireframe/image.png">
+  <img class="ui image" src="/images/wireframe/image.png">
+  <img class="ui image" src="/images/wireframe/image.png">
+  <img class="ui image" src="/images/wireframe/image.png">
+</div>
+
+ui images:指定图片组
+=======================================================================================
+***********************
+********输入框
+***********************
+输入框
+<div class="ui input">
+  <input type="text" placeholder="Search...">
+</div>
+
+ui input:指定输入框
+-----------------------------------------------
+输入框状态
+<div class="ui input focus">
+  <input type="text" placeholder="Search...">
+</div>
+
+状态:
+focus
+loading
+disabled 
+error
+-----------------------------------------------
+图标输入框
+<div class="ui icon input">
+  <input type="text" placeholder="Search...">
+  <i class="search icon"></i>
+</div>
+
+ui icon input:指定图标输入框
+图标位置:
+left
+right
+-----------------------------------------------
+标签输入框
+<div class="ui labeled input">
+    <div class="ui label">http:// </div>
+    <input type="text" placeholder="mysite.com">
+</div>
+
+ui labeled input:指定标签输入框
+ui label:标签
+-----------------------------------------------
+透明输入框
+<div class="ui transparent input">
+  <input type="text" placeholder="Search...">
+</div>
+
+transparent：透明
+-----------------------------------------------
+输入框尺寸
+<div class="ui mini icon input">
+  <input type="text" placeholder="Search mini...">
+  <i class="search icon"></i>
+</div>
+
+尺寸:
+mini 
+small 
+large 
+big 
+huge 
+massive 
+=======================================================================================
+***********************
+********标签
+***********************
+普通标签
+<div class="ui label"><i class="mail icon"></i> 23 </div>
+
+ui label:指定标签
+-----------------------------------------------
+图片标签
+<a class="ui image label"><img src="/logo.png"> Joe </a>
+
+<a class="ui yellow image label">
+	<img src="/images/avatar/small/christian.jpg"> Helen 
+	<div class="detail">Co-worker</div>
+</a>
+
+
+<div class="ui image label">
+	<img src="/images/avatar/small/nan.jpg"> Nan 
+	<i class="delete icon"></i> 
+</div>
+
+ui image label:指定图片标签
+detail:子标签
+-----------------------------------------------
+输入框标签
+<form class="ui fluid form">
+    <div class="field">
+        <input type="text" placeholder="First name">
+        <div class="ui pointing label">Please enter a value</div>
+    </div>
+</form>
+
+field:指定区域
+ui pointing label:输入框标签
+标签指向:
+below 
+left
+right
+-----------------------------------------------
+图片标签
+<div class="ui two column grid">
+    <div class="column">
+        <div class="ui fluid image">
+            <a class="ui left corner label">
+                <i class="heart icon"></i>
+            </a>
+            <img src="/logo.png">
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui fluid image">
+            <a class="ui red right corner label">
+                <i class="save icon"></i>
+            </a>
+            <img src="/logo.png">
+        </div>
+    </div>
+</div>
+
+corner:角落标签
+位置:
+left
+right
+-----------------------------------------------
+tag标签
+<a class="ui tag label">New</a>
+
+tag:指定tag标签
+-----------------------------------------------
+ribbon标签
+<div class="ui two column grid">
+    <div class="column">
+        <div class="ui raised segment">
+	        <a class="ui red ribbon label">Overview</a> 
+	        <span>Account Details</span> 
+	        <p></p> 
+	        <a class="ui blue ribbon label">Community</a> User Reviews 
+	        <p></p> 
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui segment">
+            <a class="ui orange right ribbon label">Specs</a>
+            <p></p>
+            <a class="ui teal right ribbon label">Reviews</a>
+            <p></p>
+        </div>
+    </div>
+</div>
+
+ui ribbon label:指定ribbon标签
+标签位置:
+left（默认）
+right
+-----------------------------------------------
+紧贴标签
+<div class="ui top attached label">HTML</div>
+
+ui attached label:指定紧贴标签
+位置:
+top 
+bottom 
+top right 
+top left 
+bottom left 
+bottom right 
+-----------------------------------------------
+水平标签
+<div class="ui divided selection list">
+  <a class="item">
+    <div class="ui red horizontal label">Fruit</div>Kumquats </a>
+  <a class="item">
+    <div class="ui purple horizontal label">Candy</div>Ice Cream </a>
+  <a class="item">
+    <div class="ui red horizontal label">Fruit</div>Orange </a>
+  <a class="item">
+    <div class="ui horizontal label">Dog</div>Poodle </a>
+</div>
+
+ui horizontal label:指定水平标签
+-----------------------------------------------
+浮动标签
+<div class="ui compact menu">
+  <a class="item"><i class="icon mail"></i> Messages <div class="floating ui red label">22</div>
+  </a>
+  <a class="item"><i class="icon users"></i> Friends <div class="floating ui teal label">22</div>
+  </a>
+</div>
+
+ui floating label:指定浮动标签
+-----------------------------------------------
+标签内容
+描述
+<div class="ui label">Dogs <div class="detail">214</div></div>
+标签
+<a class="ui label"><i class="mail icon"></i> Mail </a>
+图片
+<a class="ui label"><img src="/images/avatar/small/stevie.jpg"> Stevie </a>
+-----------------------------------------------
+圆标签
+<a class="ui red circular label">2</a>
+<a class="ui red empty circular label"></a>
+
+circular:圆标签
+empty circular:空原点
+-----------------------------------------------
+标签大小
+<div class="ui mini label">Mini </div>
+
+尺寸:
+mini 
+tiny 
+small 
+large 
+big 
+huge 
+massive 
+-----------------------------------------------
+标签组
+<div class="ui huge labels">
+  <div class="ui label">Fun </div>
+  <div class="ui label">Happy </div>
+  <div class="ui label">Smart </div>
+  <div class="ui label">Witty </div>
+</div>
+
+ui labels:指定标签组
+=======================================================================================
+***********************
+********列表
+***********************
+一般列表
+<div class="ui list">
+  <div class="item">
+  </div>
+  <div class="item">
+  </div>
+  <div class="item">
+  </div>
+  <div class="item">
+  </div>
+</div>
+
+ui list:列表
+item:列表项
+
+简单版
+<ul class="ui list">
+  <li>Gaining Access</li>
+  <li>Inviting Friends</li>
+  <li>Benefits <ul>
+      <li>Use Anywhere</li>
+      <li>Rebates</li>
+      <li>Discounts</li>
+    </ul>
+  </li>
+  <li>Warranty</li>
+</ul>
+-----------------------------------------------
+排列列表
+<div class="ui ordered list">
+  <a class="item">Getting Started</a>
+  <a class="item">Introduction</a>
+  <div class="item">
+    <a>Languages</a>
+    <div class="list">
+      <a class="item">HTML</a>
+      <a class="item">Javascript</a>
+      <a class="item">CSS</a>
+    </div>
+  </div>
+  <a class="item">Review</a>
+</div>
+
+ordered:排列列表
+
+简单版
+<ol class="ui list">
+  <li>Signing Up</li>
+  <li>User Benefits</li>
+  <li>User Types <ol>
+      <li>Admin</li>
+      <li>Power User</li>
+      <li>Regular User</li>
+    </ol>
+  </li>
+  <li>Deleting Your Account</li>
+</ol>
+-----------------------------------------------
+指定列表头字符
+<ol class="ui list">
+  <li value="*">Signing Up</li>
+  <li value="*">User Benefits</li>
+  <li value="*">User Types <ol>
+      <li value="-">Admin</li>
+      <li value="-">Power User</li>
+      <li value="-">Regular User</li>
+    </ol>
+  </li>
+  <li value="*">Deleting Your Account</li>
+</ol>
+
+value:指定列表前符号
+-----------------------------------------------
+连接列表
+<div class="ui link list">
+  <div class="active item">Home</div>
+  <a class="item">About</a>
+  <a class="item">Jobs</a>
+  <a class="item">Team</a>
+</div>
+
+ui link list:指定连接列表
+-----------------------------------------------
+动画列表
+<div class="ui middle aligned animated relaxed list">
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Helen</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Christian</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Daniel</div>
+        </div>
+    </div>
+</div>
+
+ui animated list:动画列表
+top aligned:文字上对齐
+middle aligned:文字垂直居中
+bottom aligned:文字下对齐
+relaxed:松散项间距
+-----------------------------------------------
+列表分割线
+<div class="ui middle aligned animated divided list">
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Helen</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Christian</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Daniel</div>
+        </div>
+    </div>
+</div>
+
+divided:列表分割线
+-----------------------------------------------
+cell列表
+<div class="ui middle aligned celled list">
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Helen</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Christian</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Daniel</div>
+        </div>
+    </div>
+</div>
+
+celled:列表分割线
+-----------------------------------------------
+水平分割
+<div class="ui middle aligned celled horizontal list">
+
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Helen</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Christian</div>
+        </div>
+    </div>
+    <div class="item">
+        <img class="ui avatar image" src="/logo.png">
+        <div class="content">
+            <div class="header">Daniel</div>
+        </div>
+    </div>
+</div>
+
+horizontal:水平分割
+=======================================================================================
+***********************
+********加载器
+***********************
+一般加载器
+<div class="ui segment">
+    <p></p>
+    <div class="ui active dimmer">
+        <div class="ui loader"></div>
+    </div>
+</div>
+
+ui dimmer:架在遮盖层
+active:是否启动
+ui loader:加载图标
+-----------------------------------------------
+文字加载器
+<div class="ui segment">
+  <div class="ui active dimmer">
+    <div class="ui text loader">Loading</div>
+  </div>
+  <p></p>
+</div>
+
+text:文字加载图标
+-----------------------------------------------
+无法确定的加载图标
+<div class="ui segment">
+  <div class="ui active dimmer">
+    <div class="ui indeterminate text loader">Preparing Files</div>
+  </div>
+  <p></p>
+</div>
+
+indeterminate:无法确定加载多少
+-----------------------------------------------
+无遮盖加载器
+<div class="ui segment">
+  <div class="ui active loader"></div>
+  <p></p>
+ </div>
+
+ ui loader:无遮盖加载器
+-----------------------------------------------
+关闭加载器
+<div class="ui segment">
+  <div class="ui disabled loader"></div>
+  <p></p>
+</div>
+
+disabled:关闭
+-----------------------------------------------
+变体
+<div class="ui active centered inline loader"></div>
+
+centered:居中
+inline:行块
+-----------------------------------------------
+加载器尺寸
+<div class="ui segment">
+  <div class="ui active dimmer">
+    <div class="ui mini text loader">Loading</div>
+  </div>
+  <p></p>
+</div>
+
+尺寸:
+mini
+tiny 
+small 
+medium 
+large 
+big 
+huge 
+massive 
+=======================================================================================
+***********************
+********Rail
+***********************
+一般Rail
+<div class="ui segment">
+  <div class="ui left rail">
+    <div class="ui segment">Left Rail Content </div>
+  </div>
+  <div class="ui right rail">
+    <div class="ui segment">Right Rail Content </div>
+  </div>
+  <p></p>
+  <p></p>
+</div>
+
+ui rai:指定Rail
+位置:
+left
+right
+-----------------------------------------------
+内部Rail
+<div class="ui segment">
+  <div class="ui left internal rail">
+    <div class="ui segment">Left Rail Content </div>
+  </div>
+  <div class="ui right internal rail">
+    <div class="ui segment">Right Rail Content </div>
+  </div>
+</div>
+
+internal:内部
+-----------------------------------------------
+分割线Rail
+<div class="ui segment">
+  <div class="ui left dividing rail">
+    <div class="ui segment">Left Rail Content </div>
+  </div>
+  <div class="ui right dividing rail">
+    <div class="ui segment">Right Rail Content </div>
+  </div>
+  <p></p>
+  <p></p>
+</div>
+
+dividing:分割线
+-----------------------------------------------
+紧贴Rail
+<div class="ui segment">
+  <div class="ui left attached rail">
+    <div class="ui segment">Left Rail Content </div>
+  </div>
+  <div class="ui right attached rail">
+    <div class="ui segment">Right Rail Content </div>
+  </div>
+  <p></p>
+  <p></p>
+</div>
+
+attached:紧贴Rail
+-----------------------------------------------
+紧凑Rail
+<div class="ui segment">
+  <div class="ui left close rail">
+    <div class="ui segment">Left Rail Content </div>
+  </div>
+  <div class="ui right close rail">
+    <div class="ui segment">Right Rail Content </div>
+  </div>
+  <p></p>
+  <p></p>
+</div>
+
+close:紧凑Rail
+=======================================================================================
+***********************
+********揭示变化
+***********************
+揭示变化
+<div class="ui fade reveal">
+  <div class="visible content">
+    <img src="/images/wireframe/square-image.png" class="ui small image">
+  </div>
+  <div class="hidden content">
+    <img src="/images/avatar/large/ade.jpg" class="ui small image">
+  </div>
+</div>
+
+<div class="ui small fade reveal image">
+  <img class="visible content" src="/images/wireframe/square-image.png">
+  <img class="hidden content" src="/images/avatar/large/ade.jpg">
+</div>
+
+ui reveal:揭示
+visible content:显示部分
+hidden content:隐藏部分
+动画:
+fade:淡入
+move:左移
+move right:右移
+move up:上移
+move dowm:下移
+circular rotate:右旋转
+circular rotate left:左旋转
+-----------------------------------------------
+状态
+<div class="ui active move left reveal">
+  <div class="visible content">
+    <img src="/images/wireframe/square-image.png" class="ui small image">
+  </div>
+  <div class="hidden content">
+    <img src="/images/avatar/large/nan.jpg" class="ui small image">
+  </div>
+</div>
+
+active:激活状态
+disabled:禁用状态
+-----------------------------------------------
+即时动作
+<div class="ui instant move reveal">
+  <div class="visible content">
+    <img src="/images/wireframe/square-image.png" class="ui small image">
+  </div>
+  <div class="hidden content">
+    <img src="/images/avatar/large/chris.jpg" class="ui small image">
+  </div>
+</div>
+
+instant:即时动作
+=======================================================================================
+***********************
+********分段
+***********************
+基础分段
+<div class="ui segment">
+    <p></p>
+</div>
+
+ui segment:分段
+-----------------------------------------------
+分段效果
+<div class="ui red raised segment">
+  <p>hello world！</p>
+</div>
+
+效果:
+raised:浮雕
+stacked:层叠
+tall stacked:高层叠
+piled:堆积
+vertical:纵轴排列
+raised:平滑
+颜色:
+red
+...
+horizontal:水平排列
+-----------------------------------------------
+紧贴分段
+<div class="ui top attached segment">
+  <p>This segment is on top</p>
+</div>
+<div class="ui attached segment">
+  <p>This segment is attached on both sides</p>
+</div>
+<div class="ui bottom attached segment">
+  <p>This segment is on bottom</p>
+</div>
+
+top:上紧贴
+bottom:下紧贴
+-----------------------------------------------
+紧凑
+<div class="ui compact segment">
+  <p>Pellentesque habitant morbi</p>
+</div>
+
+compact:紧凑
+-----------------------------------------------
+段落组
+<div class="ui compact segments">
+  <div class="ui segment">
+    <p>Pellentesque habitant morbi</p>
+  </div>
+  <div class="ui segment">
+    <p>Pellentesque habitant morbi</p>
+  </div>
+</div>
+
+ui segments:段落组
+-----------------------------------------------
+彩色边段落
+<div class="ui red segment">Red</div>
+
+颜色:
+red
+-----------------------------------------------
+彩色段落
+<div class="ui red inverted segment">Red</div>
+
+颜色:
+red inverted
+-----------------------------------------------
+强调段落
+<div class="ui secondary segment">
+  <p>I am pretty noticeable but you might check out other content before you look at me.</p>
+</div>
+
+强调等级:
+secondary
+tertiary 
+-----------------------------------------------
+圆形段落
+<div class="ui circular segment">
+  <h2 class="ui header">Buy Now <div class="sub header">$10.99</div>
+  </h2>
+</div>
+
+circular:圆形段落
+-----------------------------------------------
+去浮动段落
+<div class="ui clearing segment">
+  <div class="ui right floated button">Floated</div>
+</div>
+
+clearing:去浮动
+-----------------------------------------------
+浮动段落
+<div class="ui left floated segment">This segment will appear to the left </div>
+
+floated:浮动段落
+方向:
+left
+right
+-----------------------------------------------
+文字对齐:
+<div class="ui right aligned segment">Right </div>
+
+aligned:文字对齐
+方向:
+right 
+left 
+center 
+=======================================================================================
+***********************
+********布置
+***********************
+基本布置
+<div class="ui steps">
+  <div class="step">Shipping </div>
+</div>
+
+ui steps:布置组
+step:布置项
+-----------------------------------------------
+排列布置
+<div class="ui ordered steps">
+  <div class="completed step">
+  </div>
+  <div class="active step">
+  </div>
+  <div class="step">
+  </div>
+</div>
+
+ordered:排列布置
+completed:完成
+active:当前步骤
+-----------------------------------------------
+纵向排列
+<div class="ui vertical steps">
+  <div class="completed step">
+  </div>
+  <div class="completed step">
+  </div>
+  <div class="active step">
+  </div>
+</div>
+
+vertical:纵向排列
+-----------------------------------------------
+禁用
+<div class="ui steps">
+  <div class="disabled:禁用 step">Billing </div>
+</div>
+
+disabled:禁用
+-----------------------------------------------
+适应小屏幕
+<div class="ui tablet stackable steps">
+    <div class="step">
+    </div>
+    <div class="active step">
+    </div>
+    <div class="disabled step">
+    </div>
+</div>
+
+tablet stackable:适应小屏幕
+-----------------------------------------------
+紧贴步骤
+<div class="ui three top attached steps">
+  <div class="step">
+  </div>
+  <div class="active step">
+  </div>
+  <div class="disabled step">
+  </div>
+</div>
+<div class="ui attached segment">
+  <p></p>
+</div>
+<div class="ui three bottom attached steps">
+  <div class="step">
+  </div>
+  <div class="active step">
+  </div>
+  <div class="disabled step">
+    <i class="info icon"></i>
+  </div>
+</div>
+
+attached:紧贴
+位置:
+top
+bottom
+-----------------------------------------------
+分块步骤
+<div class="ui two steps">
+  <div class="active step">
+  </div>
+  <div class="disabled step">
+  </div>
+</div>
+
+分快数:
+two
+three
+four
+=======================================================================================
+***********************
+********面包屑导航
+***********************
+面包屑导航
+<div class="ui breadcrumb">
+  <a class="section">Home</a>
+  <div class="divider"> / </div>
+  <a class="section">Store</a>
+  <div class="divider"> / </div>
+  <div class="active section">T-Shirt</div>
+</div>
+
+ui breadcrumb:面包屑导航
+section:导航块
+-----------------------------------------------
+状态
+<div class="ui breadcrumb">
+  <div class="section">Home</div>
+  <div class="divider"> / </div>
+  <div class="active section">搜索</div>
+</div>
+
+active:激活状态
+=======================================================================================
+***********************
+********表单
+***********************
+基本表单
+<form class="ui form">
+  <div class="field">
+  </div>
+  <div class="field">
+  </div>
+  <div class="field">
+  </div>
+  <button class="ui button" type="submit">Submit</button>
+</form>
+
+ui form:表单
+field:表单区域
+-----------------------------------------------
+表单区域嵌套
+<div class="two fields">
+  <div class="field">
+  </div>
+  <div class="field">
+  </div>
+</div>
+
+一行的分区数:
+two
+three
+four
+-----------------------------------------------
+<div class="fields">
+  <div class="twelve wide field">
+  </div>
+  <div class="four wide field">
+  </div>
+</div>
+
+块宽度
+twelve wide:12/16
+...
+four wide:4/16
+-----------------------------------------------
+下拉菜单
+<select class="ui fluid dropdown">
+    <option value="AL">Alabama</option>
+</select>
+
+<div class="menu">
+    <div class="item" data-value="af"><i class="af flag"></i>Afghanistan</div>
+</div>
+
+ui dropdown:下拉菜单
+menu:选择菜单
+item:项
+-----------------------------------------------
+自动匹配
+<select class="ui fluid search dropdown" name="card[expire-month]">
+	<option value="">Month</option>
+</select>
+
+search:自动匹配
+-----------------------------------------------
+输入顶部文字:
+<div class="ui form">
+  <div class="fields">
+    <div class="field">
+      <label>First name</label>
+      <input type="text" placeholder="First Name">
+    </div>
+    <div class="field">
+      <label>Middle name</label>
+      <input type="text" placeholder="Middle Name">
+    </div>
+    <div class="field">
+      <label>Last name</label>
+      <input type="text" placeholder="Last Name">
+    </div>
+  </div>
+</div>
+
+label:输入顶部文字
+-----------------------------------------------
+文本输入框
+<div class="field">
+	<label>Text</label>
+	<textarea style="margin-top: 0px; margin-bottom: 0px; height: 168px;"></textarea>
+</div>
+-----------------------------------------------
+复选框
+<div class="ui form">
+    <div class="inline field">
+        <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden">
+            <label>复选框</label>
+        </div>
+    </div>
+    <div class="inline field">
+        <div class="ui slider checkbox">
+            <input type="checkbox" tabindex="0" class="hidden">
+            <label>Slider</label>
+        </div>
+        <label></label>
+    </div>
+    <div class="inline field">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" tabindex="0" class="hidden">
+            <label>Toggle</label>
+        </div>
+    </div>
+</div>
+<script>
+    $('.ui.checkbox')
+            .checkbox()
+    ;
+</script>
+
+ui checkbox:复选框
+样式
+slider
+toggle
+-----------------------------------------------
+单选框
+<div class="ui form">
+  <div class="inline fields">
+    <label for="fruit">Select your favorite fruit:</label>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" checked="" tabindex="0" class="hidden">
+        <label>Apples</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Oranges</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Pears</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Grapefruit</label>
+      </div>
+    </div>
+  </div>	
+</div>	
+<script type="text/javascript">
+$('.ui.radio.checkbox')
+  .checkbox()
+;
+</script>
+
+ui radio checkbox:单选框
+inline:行排列
+-----------------------------------------------
+下拉框
+<div class="ui form">
+  <div class="field">
+      <label>Gender</label>
+      <div class="ui selection dropdown">
+          <input type="hidden" name="gender">
+          <i class="dropdown icon"></i>
+          <div class="default text">Gender</div>
+          <div class="menu">
+              <div class="item" data-value="1">Male</div>
+              <div class="item" data-value="0">Female</div>
+          </div>
+      </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('select.dropdown')
+  .dropdown()
+;
+</script>
+
+ui selection dropdown:下拉框
+-----------------------------------------------
+多选框
+<div class="ui form">
+  <div class="field">
+    <label>Country</label>
+    <select multiple="" class="ui dropdown">
+      <option value="">Select Country</option>
+      <option value="AF">Afghanistan</option>
+    </select>
+  </div>	
+</div>
+<script>
+    $('select.dropdown').dropdown();
+</script>
+-----------------------------------------------
+表单消息
+<div class="ui form success">
+  <div class="ui message success">
+    <div class="header">We had some issues</div>
+    <ul class="list">
+      <li>Please enter your first name</li>
+      <li>Please enter your last name</li>
+    </ul>
+  </div>
+</div>
+
+ui message:指定表单内消息
+消息类型:
+info
+error
+success
+warning
+-----------------------------------------------
+区域状态
+<div class="ui form">
+  <div class="two fields">
+    <div class="field error">
+    </div>
+    <div class="field">
+    </div>
+  </div>
+  <div class="field error">
+  </div>
+  <div class="inline field error">
+  </div>
+</div>
+
+区域状态:
+required
+disabled 
+info
+error
+success
+warning
+-----------------------------------------------
+等宽区域
+<div class="ui equal width form">
+  <div class="fields">
+    <div class="field">
+      <label>Username</label>
+      <input type="text" placeholder="Username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password">
+    </div>
+  </div>
+  <div class="fields">
+    <div class="field">
+      <label>First name</label>
+      <input type="text" placeholder="First Name">
+    </div>
+    <div class="field">
+      <label>Middle name</label>
+      <input type="text" placeholder="Middle Name">
+    </div>
+    <div class="field">
+      <label>Last name</label>
+      <input type="text" placeholder="Last Name">
+    </div>
+  </div>
+</div>
+
+equal width:等宽区域
+-----------------------------------------------
+组区域
+<div class="ui form">
+  <div class="grouped fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Apples</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Oranges</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Pears</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="fruit" tabindex="0" class="hidden">
+        <label>Grapefruit</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+grouped fields:组区域
+=======================================================================================
+***********************
+********网格
+***********************
+一般网格:
+<div class="ui grid">
+  <div class="four wide column"></div>
+  <div class="four wide column"></div>
+</div>
+
+ui grid:网格
+宽度:
+one wide:1/16
+two wide:1/16
+three wide:1/16
+four wide:1/16
+five wide:1/16
+six wide:1/16
+seven wide:1/16
+eight wide:1/16
+...
+-----------------------------------------------
+行
+<div class="ui four column grid">
+  <div class="row">
+    <div class="column"></div>
+    <div class="column"></div>
+    <div class="column"></div>
+  </div>
+  <div class="column"></div>
+  <div class="column"></div>
+  <div class="column"></div>
+  <div class="column"></div>
+</div>
+
+row:行
+固定分区行:
+two column
+three column
+four column
+five column
+...
+relaxed:松散
+-----------------------------------------------
+紧贴
+<div class="ui top attached button">Button before grid</div>
+<div class="ui grid">
+  <div class="sixteen wide column"></div>
+  <div class="ten wide column"></div>
+  <div class="six wide column"></div>
+</div>
+<div class="ui grid">
+  <div class="sixteen wide column"></div>
+</div>
+<div class="ui bottom attached button">Button after grid</div>
+
+top attached:上紧贴
+bottom attached:下紧贴
+-----------------------------------------------
+浮动
+<div class="ui grid">
+  <div class="four column row">
+    <div class="left floated column"></div>
+    <div class="right floated column"></div>
+  </div>
+  <div class="row">
+    <div class="three wide column"></div>
+    <div class="eight wide column"></div>
+    <div class="five wide column"></div>
+  </div>
+</div>
+
+left floated:左浮动
+right floated:右浮动
+-----------------------------------------------
+网格线
+<div class="ui internally celled grid">
+    <div class="row">
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="ten wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="ten wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+    </div>
+</div>
+
+internally:间隔线
+-----------------------------------------------
+去margin
+<div class="ui padded celled grid">
+    <div class="row">
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="ten wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="ten wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+        <div class="three wide column">
+            <p>asfaklsghaksjdhasf</p>
+        </div>
+    </div>
+</div>
+
+padded:去margin
+-----------------------------------------------
+等宽
+<div class="ui equal width grid">
+  <div class="column"></div>
+  <div class="column"></div>
+  <div class="column"></div>
+  <div class="equal width row">
+    <div class="column"></div>
+    <div class="column"></div>
+  </div>
+</div>
+
+equal width:行元素等宽
+-----------------------------------------------
+移动端可变网格
+<div class="ui stackable four column celled grid">
+    <div class="column">
+        hello world!
+    </div>
+    <div class="column">
+        hello world!
+    </div>
+    <div class="column">
+        hello world!
+    </div>
+    <div class="column">
+        hello world!
+    </div>
+</div>
+
+stackable:移动端可变
+-----------------------------------------------
+移动端顺序翻转
+<div class="ui mobile reversed equal width grid">
+  <div class="column">First </div>
+  <div class="column">Second </div>
+  <div class="column">Third </div>
+</div>
+
+mobile reversed:移动端顺序翻转
+-----------------------------------------------
+移动端自动适应行
+<div class="ui grid">
+    <div class="doubling eight column row">
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+    </div>
+    <div class="doubling six column row">
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+    </div>
+    <div class="doubling four column row">
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+        <div class="column">hello world!</div>
+    </div>
+</div>
+
+doubling:移动端自动适应行
+-----------------------------------------------
+自适应列
+<div class="ui centered grid">
+    <div class="computer only row">
+        <div class="column">hello world!</div>
+    </div>
+    <div class="six wide tablet eight wide computer column">hello world!</div>
+    <div class="six wide tablet eight wide computer column">hello world!</div>
+    <div class="six wide tablet eight wide computer column">hello world!</div>
+    <div class="six wide tablet eight wide computer column">hello world!</div>
+    <div class="six wide tablet eight wide computer column">hello world!</div>
+</div>
+
+computer only:只在电脑端显示的行
+(x) wide tablet:手机上的显示
+(x) wide computer:电脑上的显示
+=======================================================================================
+***********************
+********菜单
+***********************
+基本菜单
+<div class="ui menu">
+  <a class="active item">Editorials</a>
+  <a class="item">Reviews</a>
+  <a class="item">Upcoming Events</a>
+</div>
+
+ui menu:指定基本菜单
+-----------------------------------------------
+菜单样式
+<div class="ui pointing menu">
+    <a class="item active">Home </a>
+    <a class="item">Messages </a>
+    <a class="item">Friends </a>
+</div>
+
+菜单样式:
+pointing
+secondary
+secondary pointing
+tabular fluid
+vertical tabular 
+right vertical tabular
+text 
+vertical 
+pagination 
+top fixed
+bottom fixed 
+left fixed vertical
+right fixed vertical
+stackable 
+borderless 
+-----------------------------------------------
+菜单去padding
+<div class="ui menu">
+    <div class="fitted item">No padding whatsoever </div>
+    <div class="horizontally fitted item">No horizontal padding </div>
+    <div class="vertically fitted item">No vertical padding </div>
+</div>
+
+fitted:全部去除
+horizontally fitted:留水平
+vertically fitted:留垂直
+=======================================================================================
+***********************
+********消息
+***********************
+一般消息
+<div class="ui message">
+  <div class="header">title</div>
+  <p>content</p>
+</div>
+
+ui message:指定一般消息
+-----------------------------------------------
+图标消息
+<div class="ui icon message">
+  <i class="inbox icon"></i>
+  <div class="content">
+	  <div class="header">title</div>
+	  <p>content</p>
+  </div>
+</div>
+
+icon:指定图标消息
+-----------------------------------------------
+可关闭消息
+<div class="ui message">
+    <i class="close icon"></i>
+	<div class="header">title</div>
+	<p>content</p>
+</div>
+<script type="text/javascript">
+    $('.message .close')
+        .on('click', function() {
+            $(this).closest('.message').transition('fade');
+        });
+</script>
+-----------------------------------------------
+浮动消息
+<div class="ui floating message">
+    <p>Way to go!</p>
+</div>
+
+floating:浮动消息
+-----------------------------------------------
+紧凑消息
+<div class="ui compact message">
+    <p>Way to go!</p>
+</div>
+
+compact:紧凑
+-----------------------------------------------
+紧贴消息
+<div class="ui attached message">
+    <div class="header">Welcome to our site! </div>
+    <p>Fill out the form below to sign-up for a new account</p>
+</div>
+<div class="ui bottom attached message">
+	<i class="icon help"></i> 
+	Already signed up? <a href="#">Login here</a> instead. 
+</div>
+
+attached
+bottom attached
+-----------------------------------------------
+提醒 颜色 消息
+<div class="ui warning message">
+    <i class="close icon"></i>
+    <div class="header">在这之前你必须先注册！ </div>打开我们的注册页面，再试一次。 
+</div>
+
+warning 
+info 
+positive 
+success 
+negative 
+error 
+red 
+...
+black 
+=======================================================================================
+***********************
+********表格
+***********************
+一般表格
+<table class="ui celled table">
+  <thead>
+    <tr><th>标题</th>
+    <th>标题</th>
+    <th>标题</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td>
+        <div class="ui ribbon label">First</div>
+      </td>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <td>Cell</td>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <td>Cell</td>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr><th colspan="3">
+      <div class="ui right floated pagination menu">
+        <a class="icon item">
+          <i class="left chevron icon"></i>
+        </a>
+        <a class="item">1</a>
+        <a class="item">2</a>
+        <a class="item">3</a>
+        <a class="item">4</a>
+        <a class="icon item">
+          <i class="right chevron icon"></i>
+        </a>
+      </div>
+    </th>
+  </tr></tfoot>
+</table>
+
+ui table:指定表格
+-----------------------------------------------
+表样式
+<table class="ui definition table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Arguments</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+definition:强调表头
+single line:单行表
+fixed:等宽表
+selectable:可选行/单元格
+striped:间隔行颜色
+collapsing:只占有所需的宽度
+(x) column:固定行，一共16 
+ui (color) table:彩色表
+compact:紧凑表
+very compact:非常紧凑表
+padded:宽松表
+very padded:非常宽松表
+-----------------------------------------------
+状态
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No Name Specified</td>
+      <td>Unknown</td>
+      <td class="negative">None</td>
+    </tr>
+    <tr class="positive">
+      <td>Jimmy</td>
+      <td>Approved</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>Jamie</td>
+      <td>Unknown</td>
+      <td class="positive">Requires call</td>
+    </tr>
+    <tr class="negative">
+      <td>Jill</td>
+      <td>Unknown</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+状态:
+positive
+negative
+error
+warning
+active
+disabled
+=======================================================================================
+***********************
+********卡片
+***********************
+一般卡片
+<div class="ui card">
+  <div class="image">
+    <img src="/images/avatar2/large/kristy.png">
+  </div>
+  <div class="content">
+    <a class="header">Kristy</a>
+    <div class="meta">
+      <span class="date">Joined in 2013</span>
+    </div>
+    <div class="description">Kristy is an art director living in New York. </div>
+  </div>
+  <div class="extra content">
+    <a><i class="user icon"></i> 22 Friends </a>
+  </div>
+</div>
+
+ui card:一般卡片
+-----------------------------------------------
+卡片组
+<div class="ui cards">
+  <div class="card">
+  </div>
+  <div class="card">
+  </div>
+</div>
+
+ui cards:卡片组
+-----------------------------------------------
+卡片遮盖层
+<div class="ui special cards">
+	<div class="card">
+	    <div class="blurring dimmable image">
+	        <div class="ui dimmer">
+	            <div class="content">
+	                <div class="center">
+	                    <div class="ui inverted button">Add Friend</div>
+	                </div>
+	            </div>
+	        </div>
+	        <img src="/logo.png">
+	    </div>
+	</div>
+</div>
+<script type="text/javascript">
+    $('.special.cards .image').dimmer({
+        on: 'hover'
+    });
+</script>
+
+ui special cards:特殊卡
+blurring dimmable image:遮盖层
+-----------------------------------------------
+fluid
+<div class="ui fluid card">
+  <div class="image">
+    <img src="/images/avatar/large/daniel.jpg">
+  </div>
+  <div class="content">
+    <a class="header">Daniel Louise</a>
+  </div>
+</div>
+
+fluid:满宽card
+-----------------------------------------------
+centered 
+<div class="ui centered card">
+  <div class="image">
+    <img src="/images/avatar/large/daniel.jpg">
+  </div>
+  <div class="content">
+    <a class="header">Daniel Louise</a>
+  </div>
+</div>
+
+centered:居中卡
+-----------------------------------------------
+卡片样式
+<div class="ui raised card">
+  <div class="content">
+    <div class="header">Cute Dog</div>
+    <div class="meta">
+      <span class="category">Animals</span>
+    </div>
+    <div class="description">
+      <p></p>
+    </div>
+  </div>
+  <div class="extra content">
+    <div class="right floated author"><img class="ui avatar image" src="/images/avatar/small/matt.jpg"> Matt </div>
+  </div>
+</div>
+
+raised:浮框卡
+raised link:浮框连接卡
+(color) card:彩色卡
+(x) cards:指定一行几张卡
+stackable:堆叠卡
+doubling:横向是列宽2倍
+=======================================================================================
+***********************
+********折叠菜单
+***********************
+一般折叠菜单
+<div class="ui accordion">
+    <div class="title active"><i class="dropdown icon"></i>title</div>
+    <div class="content active">
+        <p class="transition visible" style="display: block !important;">hello world!</p>
+    </div>
+    <div class="title"><i class="dropdown icon"></i>title</div>
+    <div class="content">
+        <p>hello world!</p>
+    </div>
+    <div class="title"><i class="dropdown icon"></i>title</div>
+    <div class="content">
+        <p>hello world!</p>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.accordion')
+            .accordion({
+                selector: {
+                    trigger: '.title .icon'
+                }
+            })
+    ;
+</script>
+
+ui accordion:折叠
+active:激活
+title:标题
+content:内容
+=======================================================================================
+***********************
+********复选框
+***********************
+基本checkbox
+<div class="ui checkbox">
+  <input type="checkbox" name="example">
+  <label>Make my profile visible</label>
+</div>
+基本radio
+<div class="ui radio checkbox">
+  <input type="radio" name="radio" checked="checked">
+  <label>Radio choice</label>
+</div>
+-----------------------------------------------
+选框样式
+<div class="ui slider checkbox">
+    <input type="checkbox" name="newsletter">
+    <label>Accept terms and conditions</label>
+</div>
+
+slider
+toggle 
+-----------------------------------------------
+状态
+<div class="ui read-only checkbox">
+  <input type="checkbox">
+  <label>Read Only</label>
+</div>
+
+read-only
+checked 
+disabled
+=======================================================================================
+***********************
+********遮盖层
+***********************
+基本遮盖层
+<div class="ui segment">
+  <!-- Dimmer Generated Automatically No Need to Include !-->
+  <h3 class="ui header">
+    Overlayable Section
+  </h3>
+  <div class="ui small images">
+    <img>
+    <img>
+    <img>
+  </div>
+  <p></p>
+</div>
+
+<script type="text/javascript">
+	$('.segment').dimmer('show');
+</script>
+-----------------------------------------------
+内容消息遮盖层
+<div class="ui segment">
+    <h3 class="ui header">Overlayable Section </h3>
+    <div class="ui small images">
+        <img src="{{asset('/logo.png')}}" alt="">
+        <img src="{{asset('/logo.png')}}" alt="">
+        <img src="{{asset('/logo.png')}}" alt="">
+    </div>
+    <p></p>
+    <div class="ui dimmer">
+        <div class="content">
+            <div class="center">
+                <h2 class="ui inverted icon header"><i class="heart icon"></i> Dimmed Message! </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.segment').dimmer('show');
+</script>
+-----------------------------------------------
+全屏遮盖层
+<div class="ui page dimmer">
+    <div class="content">
+        <div class="center">Hello</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.page').dimmer('show');
+</script>
+-----------------------------------------------
+状态
+<div class="ui disabled dimmer">
+    <div class="content">
+        <div class="center">Hello</div>
+    </div>
+</div>
+
+disabled 
+active 
+-----------------------------------------------
+遮盖层样式
+<div class="ui blurring segment">
+  <div class="ui dimmer"></div>
+  <p></p>
+  <p></p>
+</div>
+
+blurring
+dimmable dimmed
+=======================================================================================
+***********************
+********下拉菜单
+***********************

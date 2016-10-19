@@ -1,0 +1,37 @@
+JSON Web Token example:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.
+yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw
+
+part1 Header
+
+包括JWT的类型和算法
+
+Example Header
+{
+  “alg”: “HS256”,
+  “typ”: “JWT”
+}
+
+part2 Payload (Claims)
+
+token的负载（参数）
+
+Example Payload
+
+{
+  “iss”: “toptal.com”,
+  “exp”: 1426420800,
+  “https://www.toptal.com/jwt_claims/is_admin”: true,
+  “company”: “Toptal”,
+  “awesome”: true
+}
+
+part3 Signature
+
+token的签名部分
+
+$encodedContent = base64UrlEncode(header) + '.' + base64UrlEncode(payload);
+$signature = hashHmacSHA256($encodedContent);
+
