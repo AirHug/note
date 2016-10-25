@@ -1754,13 +1754,13 @@ grouped fields:组区域
 ui grid:网格
 宽度:
 one wide:1/16
-two wide:1/16
-three wide:1/16
-four wide:1/16
-five wide:1/16
-six wide:1/16
-seven wide:1/16
-eight wide:1/16
+two wide:2/16
+three wide:3/16
+four wide:4/16
+five wide:5/16
+six wide:6/16
+seven wide:7/16
+eight wide:8/16
 ...
 -----------------------------------------------
 行
@@ -1955,6 +1955,8 @@ doubling:移动端自动适应行
 </div>
 
 computer only:只在电脑端显示的行
+tablet only:只在平板显示的行
+mobile only:只在移动端显示的行
 (x) wide tablet:手机上的显示
 (x) wide computer:电脑上的显示
 =======================================================================================
@@ -2445,3 +2447,46 @@ dimmable dimmed
 ***********************
 ********下拉菜单
 ***********************
+
+
+=======================================================================================
+***********************
+********API
+***********************
+<div class="ui container" style="padding:50px">
+    <form class="ui form">
+        <div class="field">
+            {{csrf_field()}}
+            <input type="text" name="name">
+        </div>
+        <div class="field">
+            <button class="ui button cancel negative">cancel</button>
+            <button class="ui button positive submit" data-action="success">submit</button>
+        </div>
+    </form>
+    <button class="ui button" data-action="posts" data-id="22">执行</button>
+</div>
+
+<div class="ui segment"></div>
+
+<script>
+    $.fn.api.settings.api = {
+        'posts': '{{asset('/article/{id}')}}',
+        'success': '{{asset('/success')}}',
+    };
+    $('.ui.button').api({
+        method: 'get',
+        onComplete: function (response, $module) {
+            $('.ui.segment').html(response);
+            $module.addClass('disabled')
+        },  
+    });
+    $('.ui.form .button.submit').api({
+        method: 'post',
+        serializeForm: true,
+        data: $(this).parent('.ui.form').serialize(),
+        onSuccess: function (response, $module) {
+            console.info(response);
+        },
+    });
+</script> 

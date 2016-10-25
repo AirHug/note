@@ -59,6 +59,84 @@ npm 安装模块
 cnpm install [name]
 ===============================
 
+===============================
+操作
+
+gulp --production//生成压缩文件
+gulp watch//修改改变的文件
+
+less操作
+单文件
+elixir(function(mix) {
+    mix.less('app.less');
+});
+多文件
+elixir(function(mix) {
+    mix.less([
+        'app.less',
+        'controllers.less'
+    ]);
+});
+目标路径
+elixir(function(mix) {
+    mix.less('app.less', 'public/stylesheets');
+});
+sass操作
+elixir(function(mix) {
+    mix.sass('app.scss');
+});
+elixir(function(mix) {
+    mix.sass([
+        'app.scss',
+        'controllers.scss'
+    ], 'public/assets/css');
+});
+css操作
+elixir(function(mix) {
+    mix.styles([
+        'normalize.css',
+        'main.css'
+    ], 'public/assets/css');
+});
+CoffeeScript操作
+elixir(function(mix) {
+    mix.coffee(['app.coffee', 'controllers.coffee']);
+});
+Browserify操作
+elixir(function(mix) {
+    mix.browserify('main.js', 'public/javascripts/main.js');
+});
+Babel操作
+elixir(function(mix) {
+    mix.babel([
+        'order.js',
+        'product.js',
+        'react-component.jsx'
+    ]);
+});
+Scripts操作
+elixir(function(mix) {
+    mix.scripts([
+        'jquery.js',
+        'app.js'
+    ]);
+});
+elixir(function(mix) {
+    mix.scriptsIn('public/js/some/directory');
+});
+复制文件及目录
+elixir(function(mix) {
+    mix.copy('vendor/foo/bar.css', 'public/css/bar.css');
+});
+版本控制
+elixir(function(mix) {
+    mix.version('css/all.css');
+});
+<link rel="stylesheet" href="{{ elixir('css/all.css') }}">
+elixir(function(mix) {
+    mix.version(['css/all.css', 'js/app.js']);
+});
+
 *************************
 *    database config
 * 文件config/database.php
