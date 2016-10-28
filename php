@@ -173,14 +173,84 @@ $b = new B;
 $b->example();
 ?>
 ======================
+include_once();
+include();
+include一个文件存在错误的话，那么程序不会中端，而是继续执行，并显示一个警告错误。 
+require_once();
+require();
+require一个文件存在错误的话，那么程序就会中断执行了，并显示致命错误 
 ======================
+<?php 
+    //一般方法
+    function __autoload($classname) {
+        require_once($classname.".php");
+    }
+    //推荐方法
+    spl_autoload_functions('namespace\\Class::autoload()') ;
+    function autoload($classname) {
+        require_once($classname.".php");
+    }
+?>
+自动加载不存在的类
 ======================
+array_key_exists(key,array);
+检查某个数组中是否存在指定的键名，如果键名存在则返回 true，如果键名不存在则返回 false。
 ======================
+命名空间：
+区别不同类或者方法
+必须写在代码之前
+
+误区:
+命名空间并不会自动帮我们载入文件
+命名空间并不代表文件路径，只是psr规则要求命名空间必须与绝对路径一致
 ======================
+Psr-0
+1.命名空间必须与绝对路径一致
+2.类名首字母必须大写
+3.除入口文件，其他php文件必须只包含一个类
 ======================
+php spl 数据结构
+http://php.net/manual/zh/book.spl.php
+
+堆栈SplStack 
+队列SplQueue 
+小顶堆SplMinHeap
+大顶堆SplMaxHeap
+固定尺寸数组SplFixedArray
 ======================
+php 链式操作
+$db->where()->order()->limit();
+
+关键点:每个方法返回$this;
+return $this;
 ======================
+魔术方法
+1.__get/__set
+2.__call/__callstatic
+3.__toString
+4.__invoke
+
+function __set($key,$value){
+    //Do something
+}
+function __get($key,$value){
+    //Do something
+}
+function __call($func,$param){
+    //Do something
+}
+function __callStatic($func,$param){
+    //Do something
+}
+function __toString(){
+    //Do something
+}
+function __invoke(){
+    //Do something
+}
 ======================
+clone 
+
 ======================
 ======================
 ======================

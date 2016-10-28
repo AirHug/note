@@ -64,18 +64,18 @@
 抽象工厂的客户端不关心如何创建这些对象，
 只关心如何将它们组合到一起。
 -----------------------------------
-		abstract AbstractFactory
-		  →abstract createText()
-		 →abstract createPicture()
-			       ┊
-			     extends
-		┌----------┷----------┐
+		   abstract AbstractFactory
+  		  →abstract createText()
+  		 →abstract createPicture()
+    			       ┊
+    			     extends
+  		┌----------┷----------┐
    JsonFactory			  HtmlFactory
   →createText()		     →createText()
  →createPicture()		→createPicture()
 -----------------------------------
 使用:
-public function create(AbstractFactory $factory)
+function create(AbstractFactory $factory)
 {
     return [
         $factory->createText('标题'),
@@ -92,6 +92,67 @@ createText() and createPicture()
 我的总结：根据环境执行方法
 使用场景：不同数据库使用不同语法类创建SQL语句
 扩展方法：增加一个 AbstractFactory 继承类
+-----------------------------------
+详细代码
+<?php
+abstract class AbstractFactory
+{
+    public function __construct()
+    {
+
+    }
+
+    abstract function createText();
+
+    abstract function createPicture();
+}
+
+class JsonFactory extends AbstractFactory
+{
+    public function createText()
+    {
+        echo 'This is a json test<br/>';
+    }
+
+    public function createPicture()
+    {
+
+        echo 'This is a json picture<br/>';
+    }
+}
+
+class HtmlFactory extends AbstractFactory
+{
+    public function createText()
+    {
+        echo 'This is a html test<br/>';
+    }
+
+    public function createPicture()
+    {
+
+        echo 'This is a html picture<br/>';
+    }
+}
+
+function create(AbstractFactory $factory)
+{
+    echo $factory->createText();
+    echo $factory->createPicture();
+}
+
+$html = new HtmlFactory();
+$json = new JsonFactory();
+
+create($html);
+echo '<hr>';
+create($json);
+// This is a html test
+// This is a html picture
+// -------------------------
+// This is a json test
+// This is a json picture
+?>
 ===================================
 
 ===================================
@@ -105,14 +166,14 @@ createText() and createPicture()
 	        class Director
 	build(BuilderInterface $builder)
 
-		interface BuilderInterface
-		    →createVehicle()
-			  →addWheel()
-			  →addEngine()
-			  →addDoors()
-			 →getVehicle()
-			       ┊
-			   implements
+  		interface BuilderInterface
+  		    →createVehicle()
+  			  →addWheel()
+  			  →addEngine()
+  			  →addDoors()
+  			 →getVehicle()
+  			       ┊
+  			   implements
 		┌----------┷----------┐
    BikeBuilder			  CarBuilder
    →Bike $bike             →Car $car
@@ -122,13 +183,13 @@ createText() and createPicture()
   →addDoors()		      →addDoors()
  →getVehicle()		     →getVehicle()
 
-		    abstract Vehicle
-		      →Array $data
-		       →setPart()
-			       ┊
-			     extends
-		┌----------┷----------┐
-       Bike			          Car
+  		    abstract Vehicle
+  		      →Array $data
+  		       →setPart()
+    			       ┊
+    			     extends
+  		┌----------┷----------┐
+    Bike			              Car
 -----------------------------------
 使用:
 $director=new Director->build(BuilderInterface $builder)
@@ -138,11 +199,151 @@ $director=new Director->build(BuilderInterface $builder)
 不管输入参数为什么直接执行方法达到目的
 Bike and Car
 
-我的总结：根据目的创建对象
-使用场景：根据不同参数返回对应模型
+我的总结：指挥者接受搭建者搭建对应对象
+使用场景：不同的查询条件类通过数据库查询返回对应ORM对象
 扩展方法：
 增加一个 Vehicle 继承类
 增加一个 BuilderInterface 接口实现类
+-----------------------------------
+详细代码
+<?php
+abstract class Vehicle
+{
+    protected $data;
+
+    public function setPart($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
+}
+
+class Bike extends Vehicle
+{
+}
+
+class Car extends Vehicle
+{
+}
+
+class Engine
+{
+}
+
+class Wheel
+{
+}
+
+class Door
+{
+}
+
+interface BuilderInterface
+{
+    public function createVehicle();
+
+    public function addWheel();
+
+    public function addEngine();
+
+    public function addDoors();
+
+    public function getVehicle();
+}
+
+class CarBuilder implements BuilderInterface
+{
+    protected $car;
+
+    public function createVehicle()
+    {
+        $this->car = new Car();
+        echo 'start create a car!<br/>';
+    }
+
+    public function addDoors()
+    {
+        $this->car->setPart('rightDoor', new Door());
+        $this->car->setPart('leftDoor', new Door());
+        echo 'added four doors!<br/>';
+    }
+
+    public function addEngine()
+    {
+        $this->car->setPart('engine', new Engine());
+        echo 'added an engine of car!<br/>';
+    }
+
+    public function addWheel()
+    {
+        $this->car->setPart('wheelLF', new Wheel());
+        $this->car->setPart('wheelRF', new Wheel());
+        $this->car->setPart('wheelLR', new Wheel());
+        $this->car->setPart('wheelRR', new Wheel());
+        echo 'added four wheels!<br/>';
+    }
+
+    public function getVehicle()
+    {
+        echo 'A new car created!<br/>';
+        return $this->car;
+    }
+}
+
+class BikeBuilder implements BuilderInterface
+{
+    protected $bike;
+
+    public function createVehicle()
+    {
+        $this->bike = new Bike();
+        echo 'start create a bike!<br/>';
+    }
+
+    public function addDoors()
+    {
+        echo 'a bike dose not need door!<br/>';
+    }
+
+    public function addEngine()
+    {
+        echo 'a bike dose not need engine!<br/>';
+    }
+
+    public function addWheel()
+    {
+        $this->bike->setPart('wheelL', new Wheel());
+        $this->bike->setPart('wheelR', new Wheel());
+        echo 'added two wheels!<br/>';
+    }
+
+    public function getVehicle()
+    {
+        echo 'A new bile created!<br/>';
+        return $this->bike;
+    }
+}
+
+class Director
+{
+    public function build(BuilderInterface $builder)
+    {
+        $builder->createVehicle();
+        $builder->addDoors();
+        $builder->addEngine();
+        $builder->addWheel();
+        return $builder->getVehicle();
+    }
+}
+
+$carbuilder = new CarBuilder();
+$bikebuilder = new BikeBuilder();
+$director = new Director();
+$car = $director->build($carbuilder);
+$bike = $director->build($bikebuilder);
+var_dump($car);
+echo '<br/>';
+var_dump($bike);
+?>
 ===================================
 
 ===================================
@@ -153,21 +354,21 @@ Bike and Car
 但是让子类去实例化具体类。
 工厂方法模式让类的实例化延迟到子类中。
 -----------------------------------
-			 abstract FactoryMethod
-		    →abstract createVehicle()
-				  →create($type)
-				       ┊
-				     extends 
+  			 abstract FactoryMethod
+	      →abstract createVehicle()
+  				  →create($type)
+  				       ┊
+  				     extends 
 			┌----------┷----------┐
 	  ItalianFactory 		 GermanFactory 
 	 →createVehicle()    	→createVehicle()
 
-		   interface VehicleInterface
-			       →setColor()
-				       ┊
-				   implements 
+      	 interface VehicleInterface
+      			     →setColor()
+      				       ┊
+      				   implements 
 	    ┌--------------╂--------------┐
-	 Porsche         Bicycle 		Ferrari
+	 Porsche         Bicycle 		    Ferrari
 	 →$color         →$color        →$color
 	→setColor()	   →setColor()	   →setColor()
   →addTuningAMG()
@@ -190,6 +391,130 @@ SQL语句查询返回不同数据结构的模型对象或者模型组
 增加一个 VehicleInterface 接口实现类 
 但是共享一个所有 FactoryMethod 
 都共享一个特殊的 VehicleInterface 接口实现类
+-----------------------------------
+详细代码
+<?php
+abstract class FactoryMethod
+{
+    const CHEAP = 1;
+    const FAST = 2;
+
+    abstract protected function createVehicle($type);
+
+    public function create($type)
+    {
+        $obj = $this->createVehicle($type);
+        $obj->setColor("#f00");
+
+        return $obj;
+    }
+}
+
+class ItalianFactory extends FactoryMethod
+{
+    protected function createVehicle($type)
+    {
+        switch ($type) {
+            case parent::CHEAP:
+                return new Bicycle();
+                break;
+            case parent::FAST:
+                return new Ferrari();
+                break;
+            default:
+                throw new \InvalidArgumentException("$type is not a valid vehicle");
+        }
+    }
+}
+
+class GermanFactory extends FactoryMethod
+{
+    protected function createVehicle($type)
+    {
+        switch ($type) {
+            case parent::CHEAP:
+                return new Bicycle();
+                break;
+            case parent::FAST:
+                $obj = new Porsche();
+                //因为我们已经知道是什么对象所以可以调用具体方法
+                $obj->addTuningAMG();
+
+                return $obj;
+                break;
+            default:
+                throw new \InvalidArgumentException("$type is not a valid vehicle");
+        }
+    }
+}
+
+interface VehicleInterface
+{
+    public function setColor($rgb);
+}
+
+class Porsche implements VehicleInterface
+{
+    protected $color;
+
+    public function setColor($rgb)
+    {
+        $this->color = $rgb;
+    }
+
+    /**
+     * 尽管只有奔驰汽车挂有AMG品牌，这里我们提供一个空方法仅作代码示例
+     */
+    public function addTuningAMG()
+    {
+        echo 'amg';
+    }
+}
+
+class Bicycle implements VehicleInterface
+{
+    protected $color;
+
+    public function setColor($rgb)
+    {
+        $this->color = $rgb;
+    }
+}
+
+class Ferrari implements VehicleInterface
+{
+    protected $color;
+
+    public function setColor($rgb)
+    {
+        $this->color = $rgb;
+    }
+}
+
+function create(FactoryMethod $factoryMethod, $type)
+{
+    return $factoryMethod->create($type);
+}
+
+$italianFactory = new ItalianFactory();
+$germanFactory = new GermanFactory();
+$car1 = create($italianFactory, 1);
+$car2 = create($italianFactory, 2);
+$car3 = create($germanFactory, 1);
+$car4 = create($germanFactory, 2);
+var_dump($car1);
+echo '<br/>';
+var_dump($car2);
+echo '<br/>';
+var_dump($car3);
+echo '<br/>';
+var_dump($car4);
+// amg 
+// object(Bicycle)#3 (1) { ["color":protected]=> string(4) "#f00" } 
+// object(Ferrari)#4 (1) { ["color":protected]=> string(4) "#f00" } 
+// object(Bicycle)#5 (1) { ["color":protected]=> string(4) "#f00" } 
+// object(Porsche)#6 (1) { ["color":protected]=> string(4) "#f00" }
+?>
 ===================================
 
 ===================================
@@ -264,6 +589,58 @@ class Multiton
 我的总结：根据实例名或数组返回一组实例
 使用场景：一次性获取多个模型
 扩展方法：
+-----------------------------------
+详细代码
+<?php 
+class Multiton
+{
+    /**
+     * @var Multiton[]
+     */
+    private static $instances = [];
+
+    /**
+     * this is private to prevent from creating arbitrary instances
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     *
+     * @param $instanceName
+     * @return Multiton
+     */
+    public static function getInstance($instanceName)
+    {
+        if (!isset(self::$instances[$instanceName])) {
+            self::$instances[$instanceName] = new self();
+            echo 'create a ' . $instanceName;
+        }
+
+        return self::$instances[$instanceName];
+    }
+
+    /**
+     * prevent instance from being cloned
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * prevent instance from being unserialized
+     */
+    private function __wakeup()
+    {
+    }
+}
+
+$a = Multiton::getInstance('a');//create a a
+$a1 = Multiton::getInstance('a');
+var_dump($a === $a1);//bool(true) 
+$b = Multiton::getInstance('b');//create a b
+?>
 ===================================
 
 ===================================
@@ -322,17 +699,17 @@ dispose() 增加池中实例
 通过创建原型使用克隆方法实现对象创
 建而不是使用标准的 new 方式。
 -----------------------------------
-			  abstract BookPrototype
-			   →protected $category
-			    →public getTitle()
-			    →public setTitle()
-			   →abstract __clone()
-				       ┊
-				     extends
-			┌----------┷----------┐
+  			  abstract BookPrototype
+  			   →protected $category
+  			    →public getTitle()
+  			    →public setTitle()
+  			   →abstract __clone()
+    				       ┊
+    				     extends
+  			┌----------┷----------┐
 	BarBookPrototype 		FooBookPrototype 
-   →protected $category    →protected $category
-    →public __clone()       →public __clone()    
+→protected $category    →protected $category
+→public __clone()       →public __clone()    
 -----------------------------------
 使用:
 -----------------------------------
@@ -445,9 +822,59 @@ class Singleton
 静态调用 getInstance() 方法
 返回一个实例
 
-我的总结：根据实例名一个实例
-使用场景：防止一个实例重复创建
+我的总结：用静态方法获取单例实例，私有化原生构造函数
+使用场景：防止一个实例重复创建数据库连接等
 扩展方法：
+-----------------------------------
+详细代码
+<?php 
+final class Singleton
+{
+    /**
+     * @var Singleton
+     */
+    private static $instance;
+
+    /**
+     * gets the instance via lazy initialization (created on first usage)
+     */
+    public static function getInstance()
+    {
+        if (!static::$instance) {
+            static::$instance = new self();
+            echo 'created a instance';
+        }
+        return static::$instance;
+    }
+
+    /**
+     * is not allowed to call from outside to prevent from creating multiple instances,
+     * to use the singleton, you have to obtain the instance from Singleton::getInstance() instead
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * prevent the instance from being cloned (which would create a second instance of it)
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * prevent from being unserialized (which would create a second instance of it)
+     */
+    private function __wakeup()
+    {
+    }
+}
+
+
+$firstCall = Singleton::getInstance();//created a instance
+$secondCall = Singleton::getInstance();
+var_dump($firstCall ===  $secondCall);//bool(true)
+?>
 ===================================
 
 ===================================
@@ -463,8 +890,8 @@ class Singleton
 		       →static factory($type)
 
 		    interface FormatterInterface
-				        ┊
-				    implements 
+    				        ┊
+    				    implements 
 		┌---------------┷---------------┐
   FormatNumber  		            FormatNumber 
 -----------------------------------
@@ -498,27 +925,90 @@ class Singleton
 工作。
 -----------------------------------
 
-	        interface PaperBookInterface
-		           →public open()
-		         →public turnPage()
-		    	        ┊
-		    	    implements 
-		┌---------------┷---------------┐
-      Book			                EBookAdapter
- →public open()		             →protected $eBook
+            interface PaperBookInterface
+                   →public open()
+                 →public turnPage()
+                        ┊
+                    implements 
+        ┌---------------┷---------------┐
+      Book                          EBookAdapter
+ →public open()                    →protected $eBook
 →public turnPage()    →public __construct(EBookInterface $ebook)
-							      →public open()
-							    →public turnPage()
+                                   →public open()
+                                 →public turnPage()
 
-	         interface EBookInterface
-		        →public pressNext()
-		       →public pressStart()
-		                ┊
-		            implements 
-		                ┊
-		              Kindle 
-		        →public pressNext()
-		       →public pressStart()
+           interface EBookInterface
+            →public pressNext()
+           →public pressStart()
+                    ┊
+                implements 
+                    ┊
+                  Kindle 
+            →public pressNext()
+           →public pressStart()
+
+-----------------------------------
+使用:
+/**
+ * 电子书将纸质书接口方法转换为电子书对应方法
+ */
+public function open()
+{
+    $this->eBook->pressStart();
+}
+
+/**
+ * 纸质书翻页转化为电子书翻页
+ */
+public function turnPage()
+{
+    $this->eBook->pressNext();
+}
+-----------------------------------
+通过 EBookAdapter 来转化对应方法
+pressStart()---->open()
+pressNext()---->turnPage()
+
+我的总结：
+通过转化使原本不适应的类转化为可适应的类
+使用场景：
+引用其他人写的类到自己项目中，
+提供不适配的解决方案
+扩展方法：
+增加一个 PaperBookInterface 借口实现类
+===================================
+
+===================================
+   适配器模式（Adapter / Wrapper）
+===================================
+概述：
+适配器模式将一个类的接口转换成客户希
+望的另外一个接口，使得原本由于接口不
+兼容而不能一起工作的那些类可以在一起
+工作。
+-----------------------------------
+
+            interface PaperBookInterface
+                   →public open()
+                 →public turnPage()
+                        ┊
+                    implements 
+        ┌---------------┷---------------┐
+      Book                          EBookAdapter
+ →public open()                    →protected $eBook
+→public turnPage()    →public __construct(EBookInterface $ebook)
+                                   →public open()
+                                 →public turnPage()
+
+           interface EBookInterface
+            →public pressNext()
+           →public pressStart()
+                    ┊
+                implements 
+                    ┊
+                  Kindle 
+            →public pressNext()
+           →public pressStart()
 
 -----------------------------------
 使用:
