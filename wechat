@@ -65,3 +65,4 @@ GET：https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ShGV7QcRqs1Q8Or
 RETURN：
 {"errcode":0,"errmsg":"ok"}
 -------------------------------------------------------------------------------------------------------------------------------------------
+/wechat?signature=82f0b16fb9013c4f334123d1375219b0f6e28305&echostr=4788695542207018455&timestamp=1477735637&nonce=1469669205

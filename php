@@ -252,9 +252,35 @@ function __invoke(){
 clone 
 
 ======================
+反射类
+ReflectionClass($className) 
+传入类名
+
+1、new $class() 实例化class对象
+2、new ReflectionClass($class) 获得class的反射对象（包含了元数据信息）
+区别：
+1、new出来的class，你不能访问他的私有属性/方法，但反射可以。
+2、反射返回的对象是class的元数据对象（包含class的所有属性/方法的元数据信息），
+但不是类本身；类似于查到了类的户口档案，但户口档案不是人！
+
+之后可以判断这个名为 $className 的类是否为接口，抽象类，有XXX方法等。
 ======================
+[HOST=<host>]
+
+[HOST=dev.site.com]
+error_reporting = E_ALL
+display_errors = On
+之后的设置会只引用于域名为dev.site.com的请求
 ======================
+[PATH=<path>]
+
+[PATH=/home/site/public/secure]
+auto_prepend_file=security.php
+之后的设置会只引用于路径为/home/site/public/secure下的站点
 ======================
+array_walk($array, function($key, $value))
+
+对数组每个元素应用函数
 ======================
 ======================
 ======================

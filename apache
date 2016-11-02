@@ -163,3 +163,34 @@ ExtendedStatus On 表示的是待会访问的时候能看到详细的请求信�
 1、关于Apache参数ThreadsPerChild 和 MaxRequestsPerChild 的说明详见官方网址：http://httpd.apache.org/docs/2.2/mod/mpm_common.html
 2、中文版 Apache mpM指令：http://lamp.linux.gov.cn/Apache/ApacheMenu/mod/mpm_common.html
 --------------------------------------------------------------------------------------------------------------------------------------
+
+
+ssl证书
+--------------------
+1.修改两个配置文件
+conf/httpd.conf 
+conf/extra/httpd-ssl.conf
+
+conf/httpd.conf 
+---------------------------------------
+LoadModule ssl_module modules/mod_ssl.so
+Include conf/extra/httpd-mpm.conf  
+
+httpd-ssl.conf
+---------------------------------------
+SSLCertificateFile    xxx/conf/key/server.crt 
+SSLCertificateKeyFile    xxx/conf/key/server.key 
+SSLCACertificateFile    xxx/key/conf/ca.crt 
+SSLVerifyClient require  
+SSLVerifyDepth  1
+=========================================
+2.生成服务端和客户端的证书
+set OPENSSL_CONF=..\conf\openssl.cnf
+(a)生成服务端的私匙
+openssl genrsa -out server.key 1024
+(b)生成签署申请
+openssl req -new -out server.csr -key server.key -config ..\conf\openssl.cnf
+(c)生成CA私匙
+openssl genrsa -out ca.key 1024
+(d)生成CA生成自签署证书
+openssl req -new -x509 -days 365 -key ca.key -out ca.crt -config ..\conf\openssl.cnf

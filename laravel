@@ -150,6 +150,41 @@ elixir(function(mix) {
 ===============================
 
 ************************
+*   Errors & Logging
+************************
+===============================
+Log Modes
+===============================
+config/app.php 
+
+'log' => 'daily' //single, daily, syslog, errorlog
+single：单文件
+daily：每天
+	'log_max_files' => 30 // 只用于 daily 模式，日志文件最大数量
+syslog：
+errorlog：
+===============================
+Log Level
+===============================
+config/app.php 
+
+'log_level' => env('APP_LOG_LEVEL', 'debug'),
+
+error, critical, alert, emergency 
+===============================
+通过回调函数完全控制
+===============================
+bootstrap/app.php
+$app->configureMonologUsing(function($monolog) {
+    $monolog->pushHandler(...);
+});
+
+return $app;
+===============================
+Exceptions
+===============================
+
+************************
 *      migration
 ************************
 
