@@ -111,3 +111,17 @@ path\to\Apache\bin\ApacheMonitor.exe
 5)启动服务
 6)访问localhost:监听端口,出现Apache Haus表示配置成功
 ===========================
+
+===========================
+mysql（Linux） 的 localhost 和 127.0.0.1
+===========================
+当你使用localhost来连接数据库的时候， Mysql 会使用Unix domain socket来传输数据， 
+这种方式会快一些， 因为这是一种进程内通信(IPC)机制， 不走网络协议栈， 不需要打包拆包， 计算校验和，维护序号等操作。
+
+当你使用127.0.0.1的时候， mysql 还是会使用TCP/IP协议栈来进行数据传输。
+===========================
+备注 
+Windows的hosts 文件位置：   
+%SystemRoot%\System32\drivers\etc\hosts 
+Unix , Liunx的hosts 文件位置：
+/etc/hosts

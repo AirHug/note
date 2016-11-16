@@ -181,6 +181,17 @@ $app->configureMonologUsing(function($monolog) {
 
 return $app;
 ===============================
+日志类型
+===============================
+Log::emergency($error);
+Log::alert($error);
+Log::critical($error);
+Log::error($error);
+Log::warning($error);
+Log::notice($error);
+Log::info($error);
+Log::debug($error);
+===============================
 Exceptions
 ===============================
 

@@ -1,0 +1,50 @@
+安装和启动
+
+启动redis服务
+redis-server
+
+启动命令行工具
+redis-cli
+
+命令行
+速查表：
+http://redis.io/commands
+-----------------------------
+是否存在键值key
+exists key 
+设置键值
+set key "Hello my master!"
+获取键值
+get key
+删除键值
+del key1 [key2 key3 ...]
+追加键值(键必须已经存在)
+append key "add in bottom"
+多次设置键值
+MSET key0 'value0' key1 'value1' ...
+查找键值('*' 多位任意值, '?'单位任意值)
+KEYS *o*
+
+
+Supervisor
+-----------------------------
+Supervisor为Linux操作系统提供的进程监视器，
+将会在失败时自动重启queue:listen或queue:work命令
+
+安装和启动
+sudo apt-get install supervisor
+
+配置文件目录
+/etc/supervisor/conf.d
+在该目录中，可以创建多个配置文件指示Supervisor如何监视进程
+
+
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --daemon
+autostart=true
+autorestart=true
+user=forge
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/home/forge/app.com/worker.log
