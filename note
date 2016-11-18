@@ -125,3 +125,4 @@ Windows的hosts 文件位置：
 %SystemRoot%\System32\drivers\etc\hosts 
 Unix , Liunx的hosts 文件位置：
 /etc/hosts
+===========================
