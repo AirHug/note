@@ -1,0 +1,415 @@
+======================
+安装 webpack
+======================
+// 全局安装
+npm install -g webpack
+// 项目安装
+npm install --save-dev webpack
+======================
+
+======================
+demon 操作
+======================
+// 创建 package.json 文件
+npm init
+----------------------
+// 安装 Webpack 到项目
+npm install --save-dev webpack
+----------------------
+创建项目目录结构
+wwwroot
+	app
+		main.js // webpack 入口文件
+	public
+		index.html // 站点 Html 文件
+
+index.html
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Webpack Sample Project</title>
+  </head>
+  <body>
+    <script src="app.js"></script>
+  </body>
+</html>
+
+main.js
+
+console.info("hello world!")
+----------------------
+// 运行 webpack 打包程序
+
+// 语法 webpack {入口文件} {打包后的文件}
+webpack app/main.js public/app.js
+======================
+
+======================
+配置 webpack.config.js
+======================
+// 在上例中 wwwroot 下新建文件 webpack.config.js
+
+webpack.config.js
+
+module.exports = {
+	entry:  __dirname + "/app/main.js",//入口文件
+	output: {
+		path: __dirname + "/public",//输出文件存放路径
+		filename: "app.js"//输出文件文件名
+	}
+}
+----------------------
+// 运行 webpack
+
+$ webpack
+======================
+
+======================
+npm 代理 webpack
+======================
+package.json
+
+{
+  "name": "webpack-sample-project",
+  "version": "1.0.0",
+  "description": "Sample webpack project",
+  "scripts": {
+    "start": "webpack" //配置的地方就是这里啦，相当于把npm的start命令指向webpack命令(注释不要复制进去)
+  },
+  "author": "zhang",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^1.12.9"
+  }
+}
+----------------------
+// 运行 webpack
+
+$ npm start
+======================
+
+======================
+代码映射 Source Maps
+======================
+
+devtool选项
+
+source-map						在一个单独的文件中产生一个完整且功能完全的文件。这个文件具有最好的source map，但是它会减慢打包文件的构建速度；
+
+cheap-module-source-map			在一个单独的文件中生成一个不带列映射的map，不带列映射提高项目构建速度，但是也使得浏览器开发者工具只能对应到具体的行，不能对应到具体的列（符号），会对调试造成不便；
+
+eval-source-map					使用eval打包源文件模块，在同一个文件中生成干净的完整的source map。
+								这个选项可以在不影响构建速度的前提下生成完整的sourcemap，但是对打包后输出的JS文件的执行具有性能和安全的隐患。
+								不过在开发阶段这是一个非常好的选项，但是在生产阶段一定不要用这个选项；
+
+cheap-module-eval-source-map	这是在打包文件时最快的生成source map的方法，生成的Source Map 会和打包后的JavaScript文件同行显示，没有列映射，和eval-source-map选项具有相似的缺点；
+
+----------------------
+// webpack.config.js 案例
+
+module.exports = {
+  devtool: 'eval-source-map',			//配置生成Source Maps，选择合适的选项
+  entry:  __dirname + "/app/main.js",
+  output: {
+    path: __dirname + "/public",
+    filename: "bundle.js"
+  }
+}
+----------------------
+Note: 注意 app.js 的大小
+
+devtool 选项添加之后
+
+F:\wwwroot\webpack  (webpack@1.0.0)
+λ webpack -p
+Hash: edaec7f319e1e6eb4da4
+Version: webpack 1.13.3
+Time: 90ms
+ Asset     Size  Chunks             Chunk Names
+app.js  1.69 kB       0  [emitted]  main
+   [0] ./app/main.js 95 bytes {0} [built]
+   [1] ./app/Greeter.js 146 bytes {0} [built]
+
+devtool 选项添加之前
+
+F:\wwwroot\webpack  (webpack@1.0.0)
+λ webpack -p
+Hash: 60ff3961623955135871
+Version: webpack 1.13.3
+Time: 89ms
+ Asset       Size  Chunks             Chunk Names
+app.js  401 bytes       0  [emitted]  main
+   [0] ./app/main.js 95 bytes {0} [built]
+   [1] ./app/Greeter.js 146 bytes {0} [built]
+
+======================
+
+======================
+本地开发自动更新修改的代码
+======================
+// 安装依赖包
+
+npm install --save-dev webpack-dev-server
+
+----------------------
+// webpack 配置选项
+
+contentBase				默认webpack-dev-server会为根文件夹提供本地服务器，如果想为另外一个目录下的文件提供本地服务器，应该在这里设置其所在目录（本例设置到“public"目录）
+
+port					设置默认监听端口，如果省略，默认为”8080“
+
+inline					设置为true，当源文件改变时会自动刷新页面
+
+colors					设置为true，使终端输出的文件为彩色的
+
+historyApiFallback		在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html
+
+----------------------
+// webpack.config.js 案例
+
+module.exports = {
+  devtool: 'eval-source-map',
+
+  entry:  __dirname + "/app/main.js",
+  output: {
+    path: __dirname + "/public",
+    filename: "app.js"
+  },
+
+  devServer: {
+    contentBase: "./public",			//本地服务器所加载的页面所在的目录
+    colors: true,						//终端中输出结果为彩色
+    historyApiFallback: true,			//不跳转
+    inline: true						//实时刷新
+  }
+}
+======================
+
+======================
+Loaders
+======================
+// webpack 配置选项
+
+test：				一个匹配loaders所处理的文件的拓展名的正则表达式（必须）
+
+loader：			loader的名称（必须）
+
+include/exclude:	手动添加必须处理的文件（文件夹）或屏蔽不需要处理的文件（文件夹）（可选）；
+
+query：				为loaders提供额外的设置选项（可选）
+
+----------------------
+// 安装 Json loader 依赖包
+npm install --save-dev json-loader
+
+----------------------
+// 修改 webpack.config.js
+
+webpack.config.js
+module.exports = {
+  devtool: 'eval-source-map',
+
+  entry:  __dirname + "/app/main.js",
+  output: {
+    path: __dirname + "/public",
+    filename: "bundle.js"
+  },
+
+  module: {								//在配置文件里添加JSON loader
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: "json"
+      }
+    ]
+  },
+
+  devServer: {
+    contentBase: "./public",
+    colors: true,
+    historyApiFallback: true,
+    inline: true
+  }
+}
+
+----------------------
+// 修改与增加文件
+
+config.json
+{
+  "greetText": "Hi there and greetings from JSON!"
+}
+
+
+greeter.js
+var config = require('./config.json');
+
+module.exports = function() {
+  var greet = document.createElement('div');
+  greet.textContent = config.greetText;
+  return greet;
+};
+======================
+
+======================
+Babel
+======================
+功能(应用场景):
+Babel其实是一个编译JavaScript的平台，它的强大之处表现在可以通过编译帮你达到以下目的：
+
+1.下一代的JavaScript标准（ES6，ES7），这些标准目前并未被当前的浏览器完全的支持；
+2.使用基于JavaScript进行了拓展的语言，比如React的JSX
+
+----------------------
+// 安装依赖包
+npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react
+
+----------------------
+// webpack 中配置 Babel
+
+webpack.config.js
+...
+  module: {
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: "json"
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel',				//在webpack的module部分的loaders里进行配置即可
+        query: {
+          presets: ['es2015','react']
+        }
+      }
+    ]
+  },
+...
+----------------------
+// babel 的配置选项文件 把 babel 文件独立出来配置
+
+.babelrc
+{
+  "presets": ["react", "es2015"]
+}
+
+webpack.config.js
+...
+  module: {
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: "json"
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel'				//可以去掉 query 配置项
+      }
+    ]
+  },
+...
+======================
+
+======================
+CSS 
+======================
+// 安装依赖包
+npm install --save-dev style-loader css-loader
+----------------------
+// webpack 中配置
+
+webpack.config.js
+...
+  module: {
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: "json"
+      },
+      {
+        test: /\.css$/,
+        loader: 'style!css'				//添加对样式表的处理
+      }
+    ]
+  },
+...
+----------------------
+注：感叹号的作用在于使同一文件能够使用不同类型的loader
+----------------------
+======================
+
+======================
+CSS预处理器
+======================
+note: 
+Sass 和 Less之类的预处理器是对原生CSS的拓展，
+它们允许你使用类似于variables, nesting, mixins, inheritance等不存在于CSS中的特性来写CSS，
+CSS预处理器可以这些特殊类型的语句转化为浏览器可识别的CSS语句，
+
+常用的CSS 处理loaders
+
+Less Loader
+Sass Loader
+Stylus Loader
+----------------------
+PostCSS:
+PostCSS用来为CSS代码自动添加适应不同浏览器的CSS前缀。
+
+// 安装依赖
+npm install --save-dev postcss-loader autoprefixer
+----------------------
+// webpack 中申明依赖
+
+webpack.config.js
+
+...
+  postcss: [
+    require('autoprefixer')//调用autoprefixer插件
+  ],
+...
+======================
+
+======================
+插件（Plugins）
+======================
+要使用某个插件，我们需要通过npm安装它，
+然后要做的就是在 webpack 配置中的 plugins 关键字部分添加该插件的一个实例（plugins是一个数组）.
+----------------------
+// 增加版权实例
+
+webpack.config.js
+
+var webpack = require('webpack');
+
+module.exports = {
+  devtool: 'eval-source-map',
+  entry:  __dirname + "/app/main.js",
+  output: {...},
+
+  module: {
+    loaders: [
+      { test: /\.json$/, loader: "json" },
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
+      { test: /\.css$/, loader: 'style!css?modules!postcss' }//这里添加PostCSS
+    ]
+  },
+  postcss: [
+    require('autoprefixer')
+  ],
+
+  plugins: [
+    new webpack.BannerPlugin("Copyright Flying Unicorns inc.")//在这个数组中new一个就可以了
+  ],
+
+  devServer: {...}
+}
+
+----------------------
+// 输出文件的第一行会有
+
+/*! Copyright Flying Unicorns inc. */
+...
+======================

@@ -25,6 +25,7 @@ h、j、k、l
 左、下、上、右
 
 dd 剪切行
+nyy 复制行 n 代表几行
 x  删除光标当前位置的字符
 (1) :e filename < - > 打开文件filename，注意filename包含文件路径
 :e ~/hahaya.cc 打开主目录下的hahaya.cc文件

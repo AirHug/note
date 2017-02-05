@@ -1,0 +1,33 @@
+================================
+[Browsable(false)] //之后的属性是否在属性窗口显示
+public int Depth { get; set; }
+================================
+value ?? deaful 
+判断 value 为空否 空则返回 deaful 非空返回 value
+--------------------------------
+C# 中单例的写法
+public static MaterialSkinManager Instance
+{
+    get { return instance ?? (instance = new MaterialSkinManager()); }
+}
+================================
+[DllImport("user32.dll")]// 导入系统文件
+public static extern bool ReleaseCapture();// 存储系统文件中的对象，让类可以使用系统变量或者方法等
+
+DllImport //调用系统文件
+extern //表示此变量在其他文件中申明
+================================
+[StructLayout(LayoutKind.Sequential)]
+public struct RECT
+{
+	// struct code	
+}
+
+StructLayout //规定结构体在内存中的布局
+LayoutKind.Sequential //顺序布局 上个变量的位置紧跟着下一个变量
+LayoutKind.Explicit   //精确布局
+================================
+================================
+================================
+================================
+================================

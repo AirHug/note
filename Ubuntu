@@ -187,3 +187,63 @@ KiB Swap:  1046524 total,   735836 free,   310688 used.   544816 avail Mem
      9 root      rt   0       0      0      0 S   0.0  0.0   0:00.02 migration/0                                                     
     10 root      rt   0       0      0      0 S   0.0  0.0   0:00.04 watchdog/0     
     ...
+
+------------------------------------------------------------------------------
+权限修改
+sudo chown -R www-data 文件夹
+sudo chmod -R 0770 文件夹
+------------------------------------------------------------------------------
+mysql 数据库建立
+终端数据库连接
+mysql -u root -p
+Enter password:
+输入创建语句
+create database [数据库名称]
+切换数据库
+use mydatabase;
+显示所有表
+show tables;
+------------------------------------------------------------------------------
+创建svn
+$ sudo apt-get install subversion
+
+创建用户组
+sudo addgroup subversion
+
+添加www-data用户到用户组
+sudo usermod -G subversion -a www-data
+
+查看添加结果
+cat /etc/group|grep subversion
+
+赋予目录拥有者(目录名为myproject)
+sudo chown -R www-data:subversion myproject
+
+创建版本仓库
+sudo svnadmin create /home/svn/myproject
+
+设置文件目录访问权限
+sudo  chmod -R g+rws myproject/
+
+修改库中svnserve.conf文件
+anon-access = none
+auth-access = write
+password-db = passwd
+authz-db = authz
+realm = myproject
+
+修改库中passwd文件
+[users]
+zzh1993 = admin123
+
+在authz中添加组和权限
+[/]
+zzh1993=rw
+
+启动svn
+svnserve -d -r 目录
+
+svn检出
+svn co svn://localhost/目录
+
+------------------------------------------------------------------------------
