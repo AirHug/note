@@ -1,0 +1,128 @@
+==============================
+Sql2000报错解决方案1
+==============================
+错误：用户 'NT AUTHORITY\NETWORK SERVICE' 登录失败。
+==============================
+原因：用户不在链接用户组
+	  无法链接数据库
+==============================
+1.我的电脑-->右键-->管理-->本地用户和组
+选择“组”-->双击Administrators-->单击“添加”-->单击“高级”-->单击“立即查找”-->在下面的列表中选择Network Service用户-->两次单击“确定”-->加入。
+**************************
+2.打开Sql Server企业管理器-->选择数据库实例-->打开“安全性”节点-->选择“登录”-->在右边的列表中单击右键-->选择“新建登录”-->在“常规”选项卡中单击“名称”旁边的按钮“...”-->选择“Administrators”组-->单击下面的“成员”按钮-->选择“Network Service”-->单击“添加”按钮-->单击“确定”，返回“新建登录”对话框-->保证身份验证类型为“windows验证”和“允许访问”-->单击“确定”-->关闭“企业管理器”
+==============================
+
+==============================
+Sql2000报错解决方案2
+==============================
+错误：无法打开登录'[数据库名]'
+      中请求的数据库
+==============================
+原因：用户权限不足，
+      需分配权限
+==============================
+1.Sever Managenent Studio->实例名->安全性->登录名->某用户或用户组（右键属性）->服务器角色->分配权限->确定
+==============================
+
+===========================
+access,sqlite
+===========================
+走文件路径
+链接字符串例子access:
+Provider=Microsoft.Jet.OLEDB.4.0;
+Data Source=../Gemheyo_Y#G#H_DataBase/#Ygh_DataBase#.mdb
+===========================
+Provider:数据库提供商
+Data Source：数据源.mdb文件的路径
+===========================
+mysql,sqlserver
+===========================
+走ip+端口
+(端口不加自动走默认端口)
+链接字符串例子sqlserver
+(每行格式:属性=属性值;):
+Data Source=.\SQL2008;
+Initial Catalog=dfzx;
+Integrated Security=True;
+MultipleActiveResultSets=True;
+User ID=sa;
+Password=admin123;
+(Note:不懂属性去百度)
+===========================
+Data Source：
+ip:端口\实例名(. 表示本地)
+Initial Catalog：默认数据库名
+Integrated Security：
+是否使用集成验证
+MultipleActiveResultSets：
+是否支持重用（多人链接）
+User ID：登陆用户名
+Password：登陆密码
+===========================
+
+===========================
+dwz查找带回失败
+===========================
+检查rel属性是否设置
+===========================
+
+===========================
+php access to Mssql with iis
+===========================
+准备:
+vc14-x64
+php-7.0.*-nts-Win32-VC14-x64
+SQLSRV40.EXE
+===========================
+安装vc14-x64
+解压php-7.0.*-nts-Win32-VC14-x64
+安装SQLSRV40.EXE到
+/path/to/php-7.0.*-nts-Win32-VC14-x64/ext
+重启iis
+===========================
+'sqlsrv' => [
+    'driver'   => 'sqlsrv',
+    'host'     => '121.42.55.144',
+    'database' => 'BEM',
+    'username' => 'sa',
+    'password' => 'dinergate',
+    'port' => '1433',
+    'prefix'   => '',
+]
+===========================
+
+===========================
+Windows 配置Apache
+===========================
+工具:http://httpd.apache.org/docs/current/platform/windows.html
+下载Apache 2.4.x VC14 
+VCxx:表示可运行的平台
+===========================
+1)解压到合适的位置
+2)path\to\conf\httpd.conf
+修改Define SRVROOT “Apache根目录”
+修改Listen 服务器监听端口
+3)命令行工具执行
+"path\to\Apache\bin\httpd.exe" -k install -n apache(实例名)
+Note:Errors reported here must be corrected before the service can be started
+行后面有信息表示Apache安装失败
+4)打开Apache
+path\to\Apache\bin\ApacheMonitor.exe
+5)启动服务
+6)访问localhost:监听端口,出现Apache Haus表示配置成功
+===========================
+
+===========================
+mysql（Linux） 的 localhost 和 127.0.0.1
+===========================
+当你使用localhost来连接数据库的时候， Mysql 会使用Unix domain socket来传输数据， 
+这种方式会快一些， 因为这是一种进程内通信(IPC)机制， 不走网络协议栈， 不需要打包拆包， 计算校验和，维护序号等操作。
+
+当你使用127.0.0.1的时候， mysql 还是会使用TCP/IP协议栈来进行数据传输。
+===========================
+备注 
+Windows的hosts 文件位置：   
+%SystemRoot%\System32\drivers\etc\hosts 
+Unix , Liunx的hosts 文件位置：
+/etc/hosts
+===========================
