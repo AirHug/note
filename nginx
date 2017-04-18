@@ -1,37 +1,15 @@
 Nginx的配置文件nginx.conf配置详解如下：
-
- 
-
 user nginx nginx ;
-
 Nginx用户及组：用户 组。window下不指定
-
- 
-
 worker_processes 8;
-
 工作进程：数目。根据硬件调整，通常等于CPU数量或者2倍于CPU。
-
- 
-
 error_log  logs/error.log;  
-
 error_log  logs/error.log  notice;  
-
 error_log  logs/error.log  info;  
-
 错误日志：存放路径。
-
- 
-
 pid logs/nginx.pid;
-
 pid（进程标识符）：存放路径。
-
- 
-
 worker_rlimit_nofile 204800;
-
 指定进程可以打开的最大描述符：数目。
 
 这个指令是指当一个nginx进程打开的最多文件描述符数目，理论值应该是最多打开文件数（ulimit -n）与nginx进程数相除，但是nginx分配请求并不是那么均匀，所以最好与ulimit -n 的值保持一致。
@@ -749,3 +727,97 @@ $server_name请求到达的服务器名
 $server_port请求到达的服务器的端口号
 
 $uri等同于当前request中的URI，可不同于初始值，例如内部重定向时或使用index
+
+
+
+
+========================
+反向代理
+========================
+server {  
+    listen       80; // 请求本服务器的端口
+    server_name  localhost;// 请求本服务器的监听地址
+    client_max_body_size 1024M;
+
+    location / {
+        proxy_pass http://localhost:8080; // 反向代理服务器的地址端口
+        proxy_set_header Host $host:$server_port; 
+    }
+}
+
+========================
+负载均衡
+========================
+//负载服务器列表，部分服务器崩了也不会有关系
+upstream test {
+    ip_hash;// 解决一个用户访问服务器由于服务器不同，无法共享用户状态问题
+
+    fair; // 根据服务器响应时间长短分配 响应时间短的优先分配。
+
+    hash $request_uri; // 根据url分配后端服务器,开启此项后不允许 server 权重参数
+    hash_method crc32; // hash 算法
+
+    server localhost:8080 weight=9;//地址，权重，权重可不写
+    server localhost:8081 weight=1;
+}
+server {
+    listen       81;
+    server_name  localhost;
+    client_max_body_size 1024M;
+
+    location / {
+        proxy_pass http://test;
+        proxy_set_header Host $host:$server_port;
+    }
+}
+
+========================
+动静分离
+========================
+upstream test{  
+   server localhost:8080;  
+   server localhost:8081;  
+}   
+
+server {  
+    listen       80;  
+    server_name  localhost;  
+
+    location / {  
+        root   e:\wwwroot;  
+        index  index.html;  
+    }  
+
+    # 所有静态请求都由nginx处理，存放目录为html  
+    location ~ \.(gif|jpg|jpeg|png|bmp|swf|css|js)$ {  
+        root    e:\wwwroot;  
+    }  
+
+    # 所有动态请求都转发给tomcat处理  
+    location ~ \.(jsp|do)$ {  
+        proxy_pass  http://test;  
+    }  
+
+    error_page   500 502 503 504  /50x.html;  
+    location = /50x.html {  
+        root   e:\wwwroot;  
+    }  
+}  
+
+========================
+正向代理
+========================
+resolver 114.114.114.114 8.8.8.8;
+server {
+
+    resolver_timeout 5s;
+
+    listen 81;
+
+    access_log  e:\wwwroot\proxy.access.log;
+    error_log   e:\wwwroot\proxy.error.log;
+
+    location / {
+        proxy_pass http://$host$request_uri;
+    }
+}
